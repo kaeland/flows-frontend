@@ -33,7 +33,7 @@ class LoginPage extends Component {
       })
     };
 
-    fetch(`${APP_URL}/login`, options)
+    fetch(`${APP_URL}/signup`, options)
       .then(res => res.json())
       .then(data => {
         const { user, jwt, message } = data;
