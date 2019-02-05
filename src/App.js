@@ -59,25 +59,25 @@ class App extends Component {
             visible={visible}
             width="thin"
           >
-            <Menu.Item as="a">
+            <Menu.Item>
               <Link to="/dashboard">
                 <Icon name="chart area" />
                 Dashboard
               </Link>
             </Menu.Item>
-            <Menu.Item as="a">
+            <Menu.Item>
               <Link to="/roundsheet">
                 <Icon name="clipboard outline" />
                 Round Sheet
               </Link>
             </Menu.Item>
-            <Menu.Item as="a">
+            <Menu.Item>
               <Link to="/rounds">
                 <Icon name="folder open outline" />
                 Rounds
               </Link>
             </Menu.Item>
-            <Menu.Item as="a">
+            <Menu.Item>
               <Link to="/profile">
                 <Icon name="address card outline" />
                 Profile
