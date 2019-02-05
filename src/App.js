@@ -7,6 +7,7 @@ import {
   Link,
   Content
 } from "react-router-dom";
+
 import {
   Button,
   Header,
@@ -18,7 +19,7 @@ import {
 } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
 
-import Navigation from "./components/pages/Navigation";
+import Navbar from "./components/pages/Navbar";
 import LoginPage from "./components/pages/LoginPage";
 import SignupPage from "./components/pages/SignupPage";
 import RoundsPage from "./components/pages/RoundsPage";
@@ -27,14 +28,12 @@ import RoundSheetPage from "./components/pages/RoundSheetPage";
 import DashboardPage from "./components/pages/DashboardPage";
 
 class App extends Component {
-  state = { visible: false };
-
   handleSidebarHide = () => this.props.hideSidebar();
 
   routes = () => {
     return (
       <div style={{ height: "1000px" }}>
-        <Route path="/" component={Navigation} />
+        <Route path="/" component={Navbar} />
         <Route path="/login" exact component={LoginPage} />
         <Route path="/signup" exact component={SignupPage} />
         <Route path="/rounds" exact component={RoundsPage} />
@@ -52,7 +51,7 @@ class App extends Component {
         <Sidebar.Pushable>
           <Sidebar
             as={Menu}
-            animation="overlay"
+            animation="push"
             icon="labeled"
             inverted
             onHide={this.handleSidebarHide}
@@ -60,21 +59,29 @@ class App extends Component {
             visible={visible}
             width="thin"
           >
-            <Menu.Item onClick={() => console.log(this.props)}>
-              <Icon name="chart area" />
-              Dashboard
+            <Menu.Item as="a">
+              <Link to="/dashboard">
+                <Icon name="chart area" />
+                Dashboard
+              </Link>
             </Menu.Item>
             <Menu.Item as="a">
-              <Icon name="clipboard outline" />
-              Round Sheet
+              <Link to="/roundsheet">
+                <Icon name="clipboard outline" />
+                Round Sheet
+              </Link>
             </Menu.Item>
             <Menu.Item as="a">
-              <Icon name="folder open outline" />
-              Rounds
+              <Link to="/rounds">
+                <Icon name="folder open outline" />
+                Rounds
+              </Link>
             </Menu.Item>
             <Menu.Item as="a">
-              <Icon name="address card outline" />
-              Profile
+              <Link to="/profile">
+                <Icon name="address card outline" />
+                Profile
+              </Link>
             </Menu.Item>
           </Sidebar>
 
