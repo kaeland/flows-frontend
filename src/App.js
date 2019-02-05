@@ -33,50 +33,54 @@ class App extends Component {
 
   routes = () => {
     return (
-      <Router>
-        <div style={{ height: '1000px' }}>
-          <Route path="/" component={Navigation} />
-          <Route path="/login" exact component={LoginPage} />
-          <Route path="/signup" exact component={SignupPage} />
-          <Route path="/rounds" exact component={RoundsPage} />
-          <Route path="/profile" exact component={ProfilePage} />
-          <Route path="/roundsheet" exact component={RoundSheetPage} />
-          <Route path="/dashboard" exact component={DashboardPage} />
-        </div>
-      </Router>
+      <div style={{ height: "1000px" }}>
+        <Route path="/" component={Navigation} />
+        <Route path="/login" exact component={LoginPage} />
+        <Route path="/signup" exact component={SignupPage} />
+        <Route path="/rounds" exact component={RoundsPage} />
+        <Route path="/profile" exact component={ProfilePage} />
+        <Route path="/roundsheet" exact component={RoundSheetPage} />
+        <Route path="/dashboard" exact component={DashboardPage} />
+      </div>
     );
   };
 
   render() {
     const { visible } = this.props;
     return (
-      <Sidebar.Pushable>
-        <Sidebar
-          as={Menu}
-          animation="overlay"
-          icon="labeled"
-          inverted
-          onHide={this.handleSidebarHide}
-          vertical
-          visible={visible}
-          width="thin"
-        >
-          <Menu.Item as="a">
-            <Icon name="home" />
-            Home
-          </Menu.Item>
-          <Menu.Item as="a">
-            <Icon name="gamepad" />
-            Games
-          </Menu.Item>
-          <Menu.Item as="a">
-            <Icon name="camera" />
-            Channels
-          </Menu.Item>
-        </Sidebar>
+      <Router>
+        <Sidebar.Pushable>
+          <Sidebar
+            as={Menu}
+            animation="overlay"
+            icon="labeled"
+            inverted
+            onHide={this.handleSidebarHide}
+            vertical
+            visible={visible}
+            width="thin"
+          >
+            <Menu.Item onClick={() => console.log(this.props)}>
+              <Icon name="chart area" />
+              Dashboard
+            </Menu.Item>
+            <Menu.Item as="a">
+              <Icon name="clipboard outline" />
+              Round Sheet
+            </Menu.Item>
+            <Menu.Item as="a">
+              <Icon name="folder open outline" />
+              Rounds
+            </Menu.Item>
+            <Menu.Item as="a">
+              <Icon name="address card outline" />
+              Profile
+            </Menu.Item>
+          </Sidebar>
 
-        <Sidebar.Pusher>{this.routes()}</Sidebar.Pusher>
-      </Sidebar.Pushable>
+          <Sidebar.Pusher>{this.routes()}</Sidebar.Pusher>
+        </Sidebar.Pushable>
+      </Router>
     );
   }
 }
