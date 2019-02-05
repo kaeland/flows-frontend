@@ -1,21 +1,35 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { signout } from "../../redux/actions/authActions";
+import { hideSidebar, showSidebar } from "../../redux/actions/navActions";
 import { Menu, Button } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 
 class Navbar extends Component {
+  // Sign the user out
   handleClick = e => {
     localStorage.clear();
     this.props.signout();
-    this.props.history.push('/')
+    this.props.history.push("/");
   };
+
+  handleSidebar = () => {
+    const { visible, showSidebar, hideSidebar } = this.props
+    if (visible === false) {
+      showSidebar()
+    } else {
+      hideSidebar()
+    }
+  }
 
   render() {
     const loggedIn = localStorage.token ? true : false;
     return (
       <Menu>
-        <Menu.Item header>Flows</Menu.Item>
+        <Menu.Item 
+        header
+        onClick={this.handleSidebar}
+        >Flows</Menu.Item>
         {loggedIn ? (
           <Menu.Menu position="right">
             <Menu.Item>
@@ -43,11 +57,18 @@ class Navbar extends Component {
 
 const mapDispatchToProps = dispatch => {
   return {
-    signout: () => dispatch(signout())
+    signout: () => dispatch(signout()),
+    hideSidebar: () => dispatch(hideSidebar()), 
+    showSidebar: () => dispatch(showSidebar())
   };
 };
 
+const mapStateToProps = state => {
+  const { visible } = state.nav 
+  return { visible }
+}
+
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(Navbar);

@@ -1,5 +1,21 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { connect } from "react-redux";
+import { hideSidebar, showSidebar } from "./redux/actions/navActions";
+import {
+  BrowserRouter as Router,
+  Route,
+  Link,
+  Content
+} from "react-router-dom";
+import {
+  Button,
+  Header,
+  Icon,
+  Image,
+  Menu,
+  Segment,
+  Sidebar
+} from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
 
 import Navigation from "./components/pages/Navigation";
@@ -11,10 +27,14 @@ import RoundSheetPage from "./components/pages/RoundSheetPage";
 import DashboardPage from "./components/pages/DashboardPage";
 
 class App extends Component {
-  render() {
+  state = { visible: false };
+
+  handleSidebarHide = () => this.props.hideSidebar();
+
+  routes = () => {
     return (
       <Router>
-        <div>
+        <div style={{ height: '1000px' }}>
           <Route path="/" component={Navigation} />
           <Route path="/login" exact component={LoginPage} />
           <Route path="/signup" exact component={SignupPage} />
@@ -25,7 +45,55 @@ class App extends Component {
         </div>
       </Router>
     );
+  };
+
+  render() {
+    const { visible } = this.props;
+    return (
+      <Sidebar.Pushable>
+        <Sidebar
+          as={Menu}
+          animation="overlay"
+          icon="labeled"
+          inverted
+          onHide={this.handleSidebarHide}
+          vertical
+          visible={visible}
+          width="thin"
+        >
+          <Menu.Item as="a">
+            <Icon name="home" />
+            Home
+          </Menu.Item>
+          <Menu.Item as="a">
+            <Icon name="gamepad" />
+            Games
+          </Menu.Item>
+          <Menu.Item as="a">
+            <Icon name="camera" />
+            Channels
+          </Menu.Item>
+        </Sidebar>
+
+        <Sidebar.Pusher>{this.routes()}</Sidebar.Pusher>
+      </Sidebar.Pushable>
+    );
   }
 }
 
-export default App;
+const mapStateToProps = state => {
+  const { visible } = state.nav;
+  return { visible };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    hideSidebar: () => dispatch(hideSidebar()),
+    showSidebar: () => dispatch(showSidebar())
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App);

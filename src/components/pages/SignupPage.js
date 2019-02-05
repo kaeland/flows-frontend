@@ -40,7 +40,7 @@ class LoginPage extends Component {
         if (message === "success") {
           localStorage.setItem("token", jwt);
           this.props.login(user);
-          this.props.history.push("/");
+          this.props.history.push("/dashboard");
         } else {
           // console.log(data)
           this.props.error({ message });
