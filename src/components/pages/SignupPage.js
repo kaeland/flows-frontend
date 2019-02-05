@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Segment, Form, Input, Button } from "semantic-ui-react";
+import { Segment, Form, Input, Button, Grid, Message } from "semantic-ui-react";
 import { login, error } from "../../redux/actions/authActions";
 import { APP_URL } from "../../utils/routes";
 
@@ -40,6 +40,7 @@ class LoginPage extends Component {
         if (message === "success") {
           localStorage.setItem("token", jwt);
           this.props.login(user);
+          this.props.history.push("/");
         } else {
           // console.log(data)
           this.props.error({ message });
@@ -49,21 +50,30 @@ class LoginPage extends Component {
 
   render() {
     return (
-      <Form onSubmit={this.login}>
-        <Form.Input
-          name="username"
-          label="Username"
-          placeholder="Username..."
-          onChange={this.handleChange}
-        />
-        <Form.Input
-          name="password"
-          label="Password"
-          placeholder="Password..."
-          onChange={this.handleChange}
-        />
-        <Button type="submit">Submit</Button>
-      </Form>
+      <Grid>
+        <Grid.Row centered>
+          <Grid.Column mobile={14} computer={8} widescreen={8}>
+            <Segment>
+              <h1>Sign up:</h1>
+              <Form onSubmit={this.login}>
+                <Form.Input
+                  name="username"
+                  label="Username"
+                  placeholder="Username..."
+                  onChange={this.handleChange}
+                />
+                <Form.Input
+                  name="password"
+                  label="Password"
+                  placeholder="Password..."
+                  onChange={this.handleChange}
+                />
+                <Button type="submit">Submit</Button>
+              </Form>
+            </Segment>
+          </Grid.Column>
+        </Grid.Row>
+      </Grid>
     );
   }
 }
