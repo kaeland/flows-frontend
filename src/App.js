@@ -5,7 +5,7 @@ import {
   BrowserRouter as Router,
   Route,
   Link,
-  Content
+  Redirect
 } from "react-router-dom";
 
 import {
@@ -31,15 +31,40 @@ class App extends Component {
   handleSidebarHide = () => this.props.hideSidebar();
 
   routes = () => {
+    const loggedIn = localStorage.token !== undefined;
     return (
       <div style={{ height: "1000px" }}>
         <Route path="/" component={Navbar} />
         <Route path="/login" exact component={LoginPage} />
-        <Route path="/signup" exact component={SignupPage} />
-        <Route path="/rounds" exact component={RoundsPage} />
-        <Route path="/profile" exact component={ProfilePage} />
-        <Route path="/roundsheet" exact component={RoundSheetPage} />
-        <Route path="/dashboard" exact component={DashboardPage} />
+        <Route
+          path="/signup"
+          exact
+          render={(props) => (loggedIn ? <SignupPage {...props} /> : <Redirect to="/login" />)}
+        />
+        <Route
+          path="/rounds"
+          exact
+          render={(props) => (loggedIn ? <RoundsPage {...props} /> : <Redirect to="/login" />)}
+        />
+        <Route
+          path="/profile"
+          exact
+          render={(props) => (loggedIn ? <ProfilePage {...props} /> : <Redirect to="/login" />)}
+        />
+        <Route
+          path="/roundsheet"
+          exact
+          render={(props) =>
+            loggedIn ? <RoundSheetPage {...props} /> : <Redirect to="/login" />
+          }
+        />
+        <Route
+          path="/dashboard"
+          exact
+          render={() =>
+            loggedIn ? <DashboardPage /> : <Redirect to="/login" />
+          }
+        />
       </div>
     );
   };
