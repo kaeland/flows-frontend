@@ -1,13 +1,65 @@
 import React, { Component } from "react";
-import { connect } from 'react-redux'
+import { connect } from "react-redux";
+import _ from "lodash";
 import { Menu, Segment, Grid, Input, Button } from "semantic-ui-react";
+import { APP_URL } from "../../utils/routes";
+import { parseMachineRounds } from "../../utils/helperFunctions";
 
 class RoundSheetPage extends Component {
-  state = { 
-    activeItem: "tab1" 
+  state = {
+    activeItem: "tab1",
+    machineRounds: []
   };
 
+  componentDidMount() {
+    const options = {
+      headers: {
+        method: "GET",
+        Authorization: `Bearer ${localStorage.token}`
+      }
+    };
+    fetch(`${APP_URL}/machine_rounds`, options)
+      .then(res => res.json())
+      .then(data =>
+        this.setState({
+          machineRounds: data
+        })
+      );
+  }
+
   handleItemClick = (e, { name }) => this.setState({ activeItem: name });
+
+  handleChange = (e, data) => {
+    let machineRound = {
+      [e.target.name]: e.target.value
+    };
+    let stateArray = this.state.machineRounds;
+    // debugger;
+    // console.log("Grouped: ", _.groupBy(stateArray, function(o) {
+    //   return o.machine.name
+    // }))
+    const newMachineRounds = parseMachineRounds(stateArray, machineRound);
+    this.setState({
+      machineRounds: newMachineRounds
+    });
+  };
+
+  handleSubmit = () => {
+    const machineRounds = this.state.machineRounds;
+    const options = {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${localStorage.token}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        machine_round: machineRounds
+      })
+    };
+    fetch(`${APP_URL}/machine_rounds`, options)
+      .then(res => res.json())
+      .then(console.log);
+  };
 
   render() {
     const { activeItem } = this.state;
@@ -51,31 +103,61 @@ class RoundSheetPage extends Component {
 
                 <Grid.Row>
                   <Grid.Column textAlign="left" width={4}>
-                    Temperature Sensor
+                    Water Meter
                   </Grid.Column>
                   <Grid.Column width={4}>
-                    <Input transparent placeholder="Search..." />
+                    <Input
+                      name="11"
+                      transparent
+                      placeholder="Data..."
+                      onChange={this.handleChange}
+                    />
                   </Grid.Column>
                   <Grid.Column width={4}>
-                    <Input transparent placeholder="Search..." />
+                    <Input
+                      name="12"
+                      transparent
+                      placeholder="Data..."
+                      onChange={this.handleChange}
+                    />
                   </Grid.Column>
                   <Grid.Column width={4}>
-                    <Input transparent placeholder="Search..." />
+                    <Input
+                      onChange={this.handleChange}
+                      name="13"
+                      transparent
+                      placeholder="Data..."
+                    />
                   </Grid.Column>
                 </Grid.Row>
 
                 <Grid.Row>
                   <Grid.Column textAlign="left" width={4}>
-                    Flow Sensor
+                    Temperature Sensor
                   </Grid.Column>
                   <Grid.Column width={4}>
-                    <Input transparent placeholder="Search..." />
+                    <Input
+                      onChange={this.handleChange}
+                      name="21"
+                      transparent
+                      placeholder="Data..."
+                    />
                   </Grid.Column>
                   <Grid.Column width={4}>
-                    <Input transparent placeholder="Search..." />
+                    <Input
+                      onChange={this.handleChange}
+                      name="22"
+                      transparent
+                      placeholder="Data..."
+                    />
                   </Grid.Column>
                   <Grid.Column width={4}>
-                    <Input transparent placeholder="Search..." />
+                    <Input
+                      onChange={this.handleChange}
+                      name="23"
+                      transparent
+                      placeholder="Data..."
+                    />
                   </Grid.Column>
                 </Grid.Row>
               </Grid>
@@ -84,7 +166,9 @@ class RoundSheetPage extends Component {
         </Grid.Row>
         <Grid.Row centered>
           <Grid.Column mobile={14} computer={10} widescreen={8}>
-            <Button primary floated="right">Submit</Button>
+            <Button primary floated="right" onClick={this.handleSubmit}>
+              Submit
+            </Button>
           </Grid.Column>
         </Grid.Row>
       </Grid>
@@ -92,4 +176,7 @@ class RoundSheetPage extends Component {
   }
 }
 
-export default connect(null, null)(RoundSheetPage);
+export default connect(
+  null,
+  null
+)(RoundSheetPage);
