@@ -8,7 +8,8 @@ import { parseMachineRounds } from "../../utils/helperFunctions";
 class RoundSheetPage extends Component {
   state = {
     activeItem: "tab1",
-    machineRounds: []
+    machineRounds: [], 
+    editedRounds: []
   };
 
   componentDidMount() {
@@ -22,7 +23,8 @@ class RoundSheetPage extends Component {
       .then(res => res.json())
       .then(data =>
         this.setState({
-          machineRounds: data
+          machineRounds: data, 
+          editedRounds: data
         })
       );
   }
@@ -33,33 +35,43 @@ class RoundSheetPage extends Component {
     let machineRound = {
       [e.target.name]: e.target.value
     };
-    let stateArray = this.state.machineRounds;
+    let stateArray = this.state.editedRounds;
     // debugger;
-    // console.log("Grouped: ", _.groupBy(stateArray, function(o) {
-    //   return o.machine.name
-    // }))
+    
     const newMachineRounds = parseMachineRounds(stateArray, machineRound);
     this.setState({
-      machineRounds: newMachineRounds
+      editedRounds: newMachineRounds
     });
   };
 
   handleSubmit = () => {
-    const machineRounds = this.state.machineRounds;
-    const options = {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${localStorage.token}`,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        machine_round: machineRounds
-      })
-    };
-    fetch(`${APP_URL}/machine_rounds`, options)
-      .then(res => res.json())
-      .then(console.log);
+    const machineRounds = this.state.editedRounds;
+    // const options = {
+    //   method: "POST",
+    //   headers: {
+    //     Authorization: `Bearer ${localStorage.token}`,
+    //     "Content-Type": "application/json"
+    //   },
+    //   body: JSON.stringify({
+    //     machine_round: machineRounds
+    //   })
+    // };
+    // fetch(`${APP_URL}/machine_rounds`, options)
+    //   .then(res => res.json())
+    //   .then(console.log);
+
+    console.log(machineRounds)
   };
+
+  rounds = (num) => {
+    const { editedRounds } = this.state
+    if (_.isEmpty(editedRounds)) {
+      // debugger
+      return ''
+    } else {
+      return editedRounds[num].data
+    }
+  }
 
   render() {
     const { activeItem } = this.state;
@@ -70,21 +82,7 @@ class RoundSheetPage extends Component {
           <Grid.Column mobile={14} computer={10} widescreen={8}>
             <h1>RoundSheetPage Page</h1>
 
-            {/* Editable Table below... */}
-            <Menu attached="top" tabular>
-              <Menu.Item
-                name="Day Shift"
-                active={activeItem === "Day Shift"}
-                onClick={this.handleItemClick}
-              />
-              <Menu.Item
-                name="Night Shift"
-                active={activeItem === "Night Shift"}
-                onClick={this.handleItemClick}
-              />
-            </Menu>
-
-            <Segment attached="bottom">
+            <Segment>
               <Grid padded celled>
                 <Grid.Row>
                   <Grid.Column as="h5" textAlign="left" width={4}>
@@ -111,6 +109,7 @@ class RoundSheetPage extends Component {
                       transparent
                       placeholder="Data..."
                       onChange={this.handleChange}
+                      value={this.rounds(0)}
                     />
                   </Grid.Column>
                   <Grid.Column width={4}>
@@ -119,6 +118,7 @@ class RoundSheetPage extends Component {
                       transparent
                       placeholder="Data..."
                       onChange={this.handleChange}
+                      value={this.rounds(1)}
                     />
                   </Grid.Column>
                   <Grid.Column width={4}>
@@ -127,6 +127,7 @@ class RoundSheetPage extends Component {
                       name="13"
                       transparent
                       placeholder="Data..."
+                      value={this.rounds(2)}
                     />
                   </Grid.Column>
                 </Grid.Row>
@@ -141,6 +142,7 @@ class RoundSheetPage extends Component {
                       name="21"
                       transparent
                       placeholder="Data..."
+                      value={this.rounds(3)}
                     />
                   </Grid.Column>
                   <Grid.Column width={4}>
@@ -149,6 +151,7 @@ class RoundSheetPage extends Component {
                       name="22"
                       transparent
                       placeholder="Data..."
+                      value={this.rounds(4)}
                     />
                   </Grid.Column>
                   <Grid.Column width={4}>
@@ -157,6 +160,7 @@ class RoundSheetPage extends Component {
                       name="23"
                       transparent
                       placeholder="Data..."
+                      value={this.rounds(5)}
                     />
                   </Grid.Column>
                 </Grid.Row>
