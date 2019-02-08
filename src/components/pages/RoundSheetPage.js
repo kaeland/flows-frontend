@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import _ from "lodash";
-import { Menu, Segment, Grid, Input, Button } from "semantic-ui-react";
+import { Menu, Segment, Grid, Input, Button, Form } from "semantic-ui-react";
 import { APP_URL } from "../../utils/routes";
 import { parseMachineRounds } from "../../utils/helperFunctions";
 
@@ -29,7 +29,7 @@ class RoundSheetPage extends Component {
       );
   }
 
-  handleItemClick = (e, { name }) => this.setState({ activeItem: name });
+  // handleItemClick = (e, { name }) => this.setState({ activeItem: name });
 
   handleChange = (e, data) => {
     let machineRound = {
@@ -39,6 +39,7 @@ class RoundSheetPage extends Component {
     // debugger;
     
     const newMachineRounds = parseMachineRounds(stateArray, machineRound);
+    console.log(newMachineRounds)
     this.setState({
       editedRounds: newMachineRounds
     });
@@ -46,21 +47,22 @@ class RoundSheetPage extends Component {
 
   handleSubmit = () => {
     const machineRounds = this.state.editedRounds;
-    // const options = {
-    //   method: "POST",
-    //   headers: {
-    //     Authorization: `Bearer ${localStorage.token}`,
-    //     "Content-Type": "application/json"
-    //   },
-    //   body: JSON.stringify({
-    //     machine_round: machineRounds
-    //   })
-    // };
-    // fetch(`${APP_URL}/machine_rounds`, options)
-    //   .then(res => res.json())
-    //   .then(console.log);
 
-    console.log(machineRounds)
+    const options = {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${localStorage.token}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        machine_round: machineRounds
+      })
+    };
+    fetch(`${APP_URL}/machine_rounds/update`, options)
+      .then(res => res.json())
+      .then(console.log);
+
+    // console.log(machineRounds)
   };
 
   rounds = (num) => {
@@ -109,7 +111,7 @@ class RoundSheetPage extends Component {
                       transparent
                       placeholder="Data..."
                       onChange={this.handleChange}
-                      value={this.rounds(0)}
+                      
                     />
                   </Grid.Column>
                   <Grid.Column width={4}>
@@ -118,7 +120,7 @@ class RoundSheetPage extends Component {
                       transparent
                       placeholder="Data..."
                       onChange={this.handleChange}
-                      value={this.rounds(1)}
+                      
                     />
                   </Grid.Column>
                   <Grid.Column width={4}>
@@ -127,7 +129,7 @@ class RoundSheetPage extends Component {
                       name="13"
                       transparent
                       placeholder="Data..."
-                      value={this.rounds(2)}
+                      
                     />
                   </Grid.Column>
                 </Grid.Row>
@@ -142,7 +144,7 @@ class RoundSheetPage extends Component {
                       name="21"
                       transparent
                       placeholder="Data..."
-                      value={this.rounds(3)}
+                      
                     />
                   </Grid.Column>
                   <Grid.Column width={4}>
@@ -151,7 +153,7 @@ class RoundSheetPage extends Component {
                       name="22"
                       transparent
                       placeholder="Data..."
-                      value={this.rounds(4)}
+                      
                     />
                   </Grid.Column>
                   <Grid.Column width={4}>
@@ -160,7 +162,7 @@ class RoundSheetPage extends Component {
                       name="23"
                       transparent
                       placeholder="Data..."
-                      value={this.rounds(5)}
+                      
                     />
                   </Grid.Column>
                 </Grid.Row>
