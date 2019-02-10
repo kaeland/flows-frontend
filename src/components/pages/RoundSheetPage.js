@@ -67,16 +67,6 @@ class RoundSheetPage extends Component {
     }
   };
 
-  // rounds = num => {
-  //   const { editedRounds } = this.state;
-  //   if (_.isEmpty(editedRounds)) {
-  //     // debugger
-  //     return "";
-  //   } else {
-  //     return editedRounds[num].data;
-  //   }
-  // };
-
   render() {
     const { activeItem } = this.state;
     const rounds = () => {
