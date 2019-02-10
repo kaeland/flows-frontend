@@ -34,29 +34,37 @@ class RoundSheetPage extends Component {
     this.setState(state => {
       return state.machines[data.machine_id - 1].machine_rounds.map((mr) => {
         return mr.id === data.id 
-          ? mr.data = data.value
-          : mr 
+        ? mr.data = data.value
+        : mr 
       })
     });
   };
-
-  handleSubmit = () => {
-    const machineRounds = this.state.editedRounds;
-    // const options = {
-    //   method: "POST",
-    //   headers: {
-    //     Authorization: `Bearer ${localStorage.token}`,
-    //     "Content-Type": "application/json"
-    //   },
-    //   body: JSON.stringify({
-    //     machine_round: machineRounds
-    //   })
-    // };
-    // fetch(`${APP_URL}/machine_rounds`, options)
-    //   .then(res => res.json())
-    //   .then(console.log);
-
-    console.log(machineRounds);
+  
+  
+  
+  handleEnterKeyPress = (e) => {
+    console.log("Event: ", e.target);
+    console.log("Event value: ", e.target.value);
+    console.log("Event id: ", e.target.id);
+    console.log("Event key: ", e.key);
+    const { id, value } = e.target
+    const options = {
+        method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${localStorage.token}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        machine_round: {
+          data: value 
+        }
+      })
+    };
+    if (e.key === 'Enter') {
+      fetch(`${APP_URL}/machine_rounds/${id}`, options)
+        .then(res => res.json())
+        .then(console.log);
+    }
   };
 
   // rounds = num => {
@@ -118,6 +126,7 @@ class RoundSheetPage extends Component {
                                 value={data}
                                 id={id}
                                 onChange={this.handleChange}
+                                onKeyPress={this.handleEnterKeyPress}
                               />
                             </Grid.Column>
                           );
