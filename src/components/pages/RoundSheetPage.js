@@ -30,26 +30,6 @@ class RoundSheetPage extends Component {
   // handleItemClick = (e, { name }) => this.setState({ activeItem: name });
 
   handleChange = (e, data) => {
-<<<<<<< HEAD
-    let machineRound = {
-      [e.target.name]: e.target.value
-    };
-    let stateArray = this.state.editedRounds;
-    // debugger;
-    
-    const newMachineRounds = parseMachineRounds(stateArray, machineRound);
-    console.log(newMachineRounds)
-    this.setState({
-      editedRounds: newMachineRounds
-    });
-  };
-
-  handleSubmit = () => {
-    const machineRounds = this.state.editedRounds;
-
-    const options = {
-      method: "POST",
-=======
     console.log("Event: ", e, "Data: ", data);
     this.setState(state => {
       return state.machines[data.machine_id - 1].machine_rounds.map((mr) => {
@@ -70,22 +50,11 @@ class RoundSheetPage extends Component {
     const { id, value } = e.target
     const options = {
         method: "PATCH",
->>>>>>> roundsheet-restructuring
       headers: {
         Authorization: `Bearer ${localStorage.token}`,
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-<<<<<<< HEAD
-        machine_round: machineRounds
-      })
-    };
-    fetch(`${APP_URL}/machine_rounds/update`, options)
-      .then(res => res.json())
-      .then(console.log);
-
-    // console.log(machineRounds)
-=======
         machine_round: {
           data: value 
         }
@@ -96,7 +65,6 @@ class RoundSheetPage extends Component {
         .then(res => res.json())
         .then(console.log);
     }
->>>>>>> roundsheet-restructuring
   };
 
   // rounds = num => {
@@ -138,73 +106,6 @@ class RoundSheetPage extends Component {
                   })}
                 </Grid.Row>
 
-<<<<<<< HEAD
-                <Grid.Row>
-                  <Grid.Column textAlign="left" width={4}>
-                    Water Meter
-                  </Grid.Column>
-                  <Grid.Column width={4}>
-                    <Input
-                      name="11"
-                      transparent
-                      placeholder="Data..."
-                      onChange={this.handleChange}
-                      
-                    />
-                  </Grid.Column>
-                  <Grid.Column width={4}>
-                    <Input
-                      name="12"
-                      transparent
-                      placeholder="Data..."
-                      onChange={this.handleChange}
-                      
-                    />
-                  </Grid.Column>
-                  <Grid.Column width={4}>
-                    <Input
-                      onChange={this.handleChange}
-                      name="13"
-                      transparent
-                      placeholder="Data..."
-                      
-                    />
-                  </Grid.Column>
-                </Grid.Row>
-
-                <Grid.Row>
-                  <Grid.Column textAlign="left" width={4}>
-                    Temperature Sensor
-                  </Grid.Column>
-                  <Grid.Column width={4}>
-                    <Input
-                      onChange={this.handleChange}
-                      name="21"
-                      transparent
-                      placeholder="Data..."
-                      
-                    />
-                  </Grid.Column>
-                  <Grid.Column width={4}>
-                    <Input
-                      onChange={this.handleChange}
-                      name="22"
-                      transparent
-                      placeholder="Data..."
-                      
-                    />
-                  </Grid.Column>
-                  <Grid.Column width={4}>
-                    <Input
-                      onChange={this.handleChange}
-                      name="23"
-                      transparent
-                      placeholder="Data..."
-                      
-                    />
-                  </Grid.Column>
-                </Grid.Row>
-=======
                 {/* List of machines with their machine_round data */}
                 {this.state.machines.map(({ name, machine_rounds, id }) => {
                   return (
@@ -234,7 +135,6 @@ class RoundSheetPage extends Component {
                     </Grid.Row>
                   );
                 })}
->>>>>>> roundsheet-restructuring
               </Grid>
             </Segment>
           </Grid.Column>
