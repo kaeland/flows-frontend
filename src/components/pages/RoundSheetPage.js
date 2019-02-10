@@ -35,13 +35,13 @@ class RoundSheetPage extends Component {
     let machineRound = {
       [e.target.name]: e.target.value
     };
-    let stateArray = this.state.editedRounds;
-    // debugger;
+    let stateArray = this.state.machineRounds;
+    console.log(machineRound, stateArray)
     
     const newMachineRounds = parseMachineRounds(stateArray, machineRound);
-    this.setState({
-      editedRounds: newMachineRounds
-    });
+    this.setState((state) => {
+      return { machineRounds: newMachineRounds }
+    }); 
   };
 
   handleSubmit = () => {
@@ -64,6 +64,7 @@ class RoundSheetPage extends Component {
   };
 
   rounds = (num) => {
+
     const { editedRounds } = this.state
     if (_.isEmpty(editedRounds)) {
       // debugger
@@ -109,7 +110,7 @@ class RoundSheetPage extends Component {
                       transparent
                       placeholder="Data..."
                       onChange={this.handleChange}
-                      value={this.rounds(0)}
+                      value={this.state.editedRounds.data ? this.state.editedRounds.data : null}
                     />
                   </Grid.Column>
                   <Grid.Column width={4}>
@@ -118,7 +119,7 @@ class RoundSheetPage extends Component {
                       transparent
                       placeholder="Data..."
                       onChange={this.handleChange}
-                      value={this.rounds(1)}
+                      value={this.state.editedRounds.data ? this.state.editedRounds.data : null}
                     />
                   </Grid.Column>
                   <Grid.Column width={4}>
