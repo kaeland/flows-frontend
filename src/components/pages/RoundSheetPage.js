@@ -29,18 +29,16 @@ class RoundSheetPage extends Component {
 
   handleItemClick = (e, { name }) => this.setState({ activeItem: name });
 
-  // handleChange = (e, data) => {
-  //   let machineRound = {
-  //     [e.target.name]: e.target.value
-  //   };
-  //   let stateArray = this.state.machineRounds;
-  //   console.log(machineRound, stateArray);
-
-  //   const newMachineRounds = parseMachineRounds(stateArray, machineRound);
-  //   this.setState(state => {
-  //     return { machineRounds: newMachineRounds };
-  //   });
-  // };
+  handleChange = (e, data) => {
+    console.log("Event: ", e, "Data: ", data);
+    this.setState(state => {
+      return state.machines[data.machine_id - 1].machine_rounds.map((mr) => {
+        return mr.id === data.id 
+          ? mr.data = data.value
+          : mr 
+      })
+    });
+  };
 
   handleSubmit = () => {
     const machineRounds = this.state.editedRounds;
@@ -61,15 +59,15 @@ class RoundSheetPage extends Component {
     console.log(machineRounds);
   };
 
-  rounds = num => {
-    const { editedRounds } = this.state;
-    if (_.isEmpty(editedRounds)) {
-      // debugger
-      return "";
-    } else {
-      return editedRounds[num].data;
-    }
-  };
+  // rounds = num => {
+  //   const { editedRounds } = this.state;
+  //   if (_.isEmpty(editedRounds)) {
+  //     // debugger
+  //     return "";
+  //   } else {
+  //     return editedRounds[num].data;
+  //   }
+  // };
 
   render() {
     const { activeItem } = this.state;
@@ -91,9 +89,9 @@ class RoundSheetPage extends Component {
                   <Grid.Column as="h5" textAlign="left" width={4}>
                     Machines
                   </Grid.Column>
-                  {rounds().map(({ time_of_day }) => {
+                  {rounds().map(({ time_of_day, id }) => {
                     return (
-                      <Grid.Column as="h5" width={4}>
+                      <Grid.Column key={id} as="h5" width={4}>
                         {time_of_day}
                       </Grid.Column>
                     );
@@ -101,24 +99,30 @@ class RoundSheetPage extends Component {
                 </Grid.Row>
 
                 {/* List of machines with their machine_round data */}
-                {this.state.machines.map(({ name, machine_rounds }) => {
+                {this.state.machines.map(({ name, machine_rounds, id }) => {
                   return (
-                    <Grid.Row>
+                    <Grid.Row key={id}>
                       <Grid.Column textAlign="left" width={4}>
                         {name}
                       </Grid.Column>
-                      {machine_rounds.map(({ data, machine_id, round_id }) => {
-                        return (
-                          <Grid.Column width={4}>
-                            <Input
-                              name={`${machine_id}${round_id}`}
-                              transparent
-                              placeholder="Data..."
-                              value={data}
-                            />
-                          </Grid.Column>
-                        );
-                      })}
+                      {machine_rounds.map(
+                        ({ data, machine_id, round_id, id }) => {
+                          return (
+                            <Grid.Column key={id} width={4}>
+                              <Input
+                                name={`${machine_id}${round_id}`}
+                                machine_id={machine_id}
+                                round_id={round_id}
+                                transparent
+                                placeholder="Data..."
+                                value={data}
+                                id={id}
+                                onChange={this.handleChange}
+                              />
+                            </Grid.Column>
+                          );
+                        }
+                      )}
                     </Grid.Row>
                   );
                 })}
