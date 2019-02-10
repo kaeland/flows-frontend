@@ -8,8 +8,7 @@ import { parseMachineRounds } from "../../utils/helperFunctions";
 class RoundSheetPage extends Component {
   state = {
     activeItem: "tab1",
-    machineRounds: [], 
-    editedRounds: []
+    machines: []
   };
 
   componentDidMount() {
@@ -19,12 +18,11 @@ class RoundSheetPage extends Component {
         Authorization: `Bearer ${localStorage.token}`
       }
     };
-    fetch(`${APP_URL}/machine_rounds`, options)
+    fetch(`${APP_URL}/machines`, options)
       .then(res => res.json())
-      .then(data =>
+      .then(machines =>
         this.setState({
-          machineRounds: data, 
-          editedRounds: data
+          machines: machines
         })
       );
   }
@@ -32,6 +30,7 @@ class RoundSheetPage extends Component {
   // handleItemClick = (e, { name }) => this.setState({ activeItem: name });
 
   handleChange = (e, data) => {
+<<<<<<< HEAD
     let machineRound = {
       [e.target.name]: e.target.value
     };
@@ -50,11 +49,34 @@ class RoundSheetPage extends Component {
 
     const options = {
       method: "POST",
+=======
+    console.log("Event: ", e, "Data: ", data);
+    this.setState(state => {
+      return state.machines[data.machine_id - 1].machine_rounds.map((mr) => {
+        return mr.id === data.id 
+        ? mr.data = data.value
+        : mr 
+      })
+    });
+  };
+  
+  
+  
+  handleEnterKeyPress = (e) => {
+    console.log("Event: ", e.target);
+    console.log("Event value: ", e.target.value);
+    console.log("Event id: ", e.target.id);
+    console.log("Event key: ", e.key);
+    const { id, value } = e.target
+    const options = {
+        method: "PATCH",
+>>>>>>> roundsheet-restructuring
       headers: {
         Authorization: `Bearer ${localStorage.token}`,
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
+<<<<<<< HEAD
         machine_round: machineRounds
       })
     };
@@ -63,44 +85,60 @@ class RoundSheetPage extends Component {
       .then(console.log);
 
     // console.log(machineRounds)
+=======
+        machine_round: {
+          data: value 
+        }
+      })
+    };
+    if (e.key === 'Enter') {
+      fetch(`${APP_URL}/machine_rounds/${id}`, options)
+        .then(res => res.json())
+        .then(console.log);
+    }
+>>>>>>> roundsheet-restructuring
   };
 
-  rounds = (num) => {
-    const { editedRounds } = this.state
-    if (_.isEmpty(editedRounds)) {
-      // debugger
-      return ''
-    } else {
-      return editedRounds[num].data
-    }
-  }
+  // rounds = num => {
+  //   const { editedRounds } = this.state;
+  //   if (_.isEmpty(editedRounds)) {
+  //     // debugger
+  //     return "";
+  //   } else {
+  //     return editedRounds[num].data;
+  //   }
+  // };
 
   render() {
     const { activeItem } = this.state;
-
+    const rounds = () => {
+      return this.state.machines[0] !== undefined
+        ? this.state.machines[0].rounds
+        : [];
+    };
     return (
       <Grid>
         <Grid.Row centered>
           <Grid.Column mobile={14} computer={10} widescreen={8}>
-            <h1>RoundSheetPage Page</h1>
+            <h1>Roundsheet Page</h1>
 
             <Segment>
               <Grid padded celled>
+                {/* Row of Headers for the Table */}
                 <Grid.Row>
                   <Grid.Column as="h5" textAlign="left" width={4}>
                     Machines
                   </Grid.Column>
-                  <Grid.Column as="h5" width={4}>
-                    7AM
-                  </Grid.Column>
-                  <Grid.Column as="h5" width={4}>
-                    11AM
-                  </Grid.Column>
-                  <Grid.Column as="h5" width={4}>
-                    3PM
-                  </Grid.Column>
+                  {rounds().map(({ time_of_day, id }) => {
+                    return (
+                      <Grid.Column key={id} as="h5" width={4}>
+                        {time_of_day}
+                      </Grid.Column>
+                    );
+                  })}
                 </Grid.Row>
 
+<<<<<<< HEAD
                 <Grid.Row>
                   <Grid.Column textAlign="left" width={4}>
                     Water Meter
@@ -166,15 +204,39 @@ class RoundSheetPage extends Component {
                     />
                   </Grid.Column>
                 </Grid.Row>
+=======
+                {/* List of machines with their machine_round data */}
+                {this.state.machines.map(({ name, machine_rounds, id }) => {
+                  return (
+                    <Grid.Row key={id}>
+                      <Grid.Column textAlign="left" width={4}>
+                        {name}
+                      </Grid.Column>
+                      {machine_rounds.map(
+                        ({ data, machine_id, round_id, id }) => {
+                          return (
+                            <Grid.Column key={id} width={4}>
+                              <Input
+                                name={`${machine_id}${round_id}`}
+                                machine_id={machine_id}
+                                round_id={round_id}
+                                transparent
+                                placeholder="Data..."
+                                value={data}
+                                id={id}
+                                onChange={this.handleChange}
+                                onKeyPress={this.handleEnterKeyPress}
+                              />
+                            </Grid.Column>
+                          );
+                        }
+                      )}
+                    </Grid.Row>
+                  );
+                })}
+>>>>>>> roundsheet-restructuring
               </Grid>
             </Segment>
-          </Grid.Column>
-        </Grid.Row>
-        <Grid.Row centered>
-          <Grid.Column mobile={14} computer={10} widescreen={8}>
-            <Button primary floated="right" onClick={this.handleSubmit}>
-              Submit
-            </Button>
           </Grid.Column>
         </Grid.Row>
       </Grid>
