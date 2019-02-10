@@ -77,8 +77,7 @@ class RoundSheetPage extends Component {
     return (
       <Grid>
         <Grid.Row centered>
-          <Grid.Column mobile={14} computer={10} widescreen={8}>
-            <h1>Roundsheet Page</h1>
+          <Grid.Column mobile={14} computer={12} widescreen={8}>
 
             <Segment>
               <Grid padded celled>

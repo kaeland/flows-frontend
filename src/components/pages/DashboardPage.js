@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import RoundSheetPage from "../pages/RoundSheetPage";
 import "../../../node_modules/react-vis/dist/style.css";
 import {
   XYPlot,
@@ -8,39 +9,9 @@ import {
   XAxis,
   YAxis
 } from "react-vis";
-import { Grid, Segment, Table } from "semantic-ui-react";
+import { Grid, Segment, Table, Button } from "semantic-ui-react";
 
 class DashboardPage extends Component {
-  renderTable = () => {
-    return (
-      <Table celled>
-        <Table.Header>
-          <Table.Row>
-            <Table.HeaderCell>Machine</Table.HeaderCell>
-            <Table.HeaderCell>7AM</Table.HeaderCell>
-            <Table.HeaderCell>11AM</Table.HeaderCell>
-            <Table.HeaderCell>3PM</Table.HeaderCell>
-          </Table.Row>
-        </Table.Header>
-
-        <Table.Body>
-          <Table.Row>
-            <Table.Cell>Temperature Sensor</Table.Cell>
-            <Table.Cell />
-            <Table.Cell />
-            <Table.Cell />
-          </Table.Row>
-          <Table.Row>
-            <Table.Cell>Flow Sensor</Table.Cell>
-            <Table.Cell />
-            <Table.Cell />
-            <Table.Cell />
-          </Table.Row>
-        </Table.Body>
-      </Table>
-    );
-  };
-
   render() {
     const data = [
       { x: 0, y: 8 },
@@ -71,11 +42,17 @@ class DashboardPage extends Component {
               </Segment>
             </Grid.Column>
           </Grid.Row>
+
+          <Grid.Row />
+          {/* Place Roundsheet Buttons Below */}
           <Grid.Row centered>
             <Grid.Column mobile={14} computer={12} widescreen={8}>
-              <Segment>{this.renderTable()}</Segment>
+              <Button>Add Machine</Button>
             </Grid.Column>
           </Grid.Row>
+
+          {/* Place Roundsheet Below */}
+          <RoundSheetPage />
         </Grid>
       </div>
     );
