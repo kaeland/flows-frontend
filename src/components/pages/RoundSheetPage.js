@@ -8,8 +8,7 @@ import { parseMachineRounds } from "../../utils/helperFunctions";
 class RoundSheetPage extends Component {
   state = {
     activeItem: "tab1",
-    machineRounds: [], 
-    editedRounds: []
+    machines: []
   };
 
   componentDidMount() {
@@ -19,30 +18,29 @@ class RoundSheetPage extends Component {
         Authorization: `Bearer ${localStorage.token}`
       }
     };
-    fetch(`${APP_URL}/machine_rounds`, options)
+    fetch(`${APP_URL}/machines`, options)
       .then(res => res.json())
-      .then(data =>
+      .then(machines =>
         this.setState({
-          machineRounds: data, 
-          editedRounds: data
+          machines: machines
         })
       );
   }
 
   handleItemClick = (e, { name }) => this.setState({ activeItem: name });
 
-  handleChange = (e, data) => {
-    let machineRound = {
-      [e.target.name]: e.target.value
-    };
-    let stateArray = this.state.machineRounds;
-    console.log(machineRound, stateArray)
-    
-    const newMachineRounds = parseMachineRounds(stateArray, machineRound);
-    this.setState((state) => {
-      return { machineRounds: newMachineRounds }
-    }); 
-  };
+  // handleChange = (e, data) => {
+  //   let machineRound = {
+  //     [e.target.name]: e.target.value
+  //   };
+  //   let stateArray = this.state.machineRounds;
+  //   console.log(machineRound, stateArray);
+
+  //   const newMachineRounds = parseMachineRounds(stateArray, machineRound);
+  //   this.setState(state => {
+  //     return { machineRounds: newMachineRounds };
+  //   });
+  // };
 
   handleSubmit = () => {
     const machineRounds = this.state.editedRounds;
@@ -60,120 +58,72 @@ class RoundSheetPage extends Component {
     //   .then(res => res.json())
     //   .then(console.log);
 
-    console.log(machineRounds)
+    console.log(machineRounds);
   };
 
-  rounds = (num) => {
-
-    const { editedRounds } = this.state
+  rounds = num => {
+    const { editedRounds } = this.state;
     if (_.isEmpty(editedRounds)) {
       // debugger
-      return ''
+      return "";
     } else {
-      return editedRounds[num].data
+      return editedRounds[num].data;
     }
-  }
+  };
 
   render() {
     const { activeItem } = this.state;
-
+    const rounds = () => {
+      return this.state.machines[0] !== undefined
+        ? this.state.machines[0].rounds
+        : [];
+    };
     return (
       <Grid>
         <Grid.Row centered>
           <Grid.Column mobile={14} computer={10} widescreen={8}>
-            <h1>RoundSheetPage Page</h1>
+            <h1>Roundsheet Page</h1>
 
             <Segment>
               <Grid padded celled>
+                {/* Row of Headers for the Table */}
                 <Grid.Row>
                   <Grid.Column as="h5" textAlign="left" width={4}>
                     Machines
                   </Grid.Column>
-                  <Grid.Column as="h5" width={4}>
-                    7AM
-                  </Grid.Column>
-                  <Grid.Column as="h5" width={4}>
-                    11AM
-                  </Grid.Column>
-                  <Grid.Column as="h5" width={4}>
-                    3PM
-                  </Grid.Column>
+                  {rounds().map(({ time_of_day }) => {
+                    return (
+                      <Grid.Column as="h5" width={4}>
+                        {time_of_day}
+                      </Grid.Column>
+                    );
+                  })}
                 </Grid.Row>
 
-                <Grid.Row>
-                  <Grid.Column textAlign="left" width={4}>
-                    Water Meter
-                  </Grid.Column>
-                  <Grid.Column width={4}>
-                    <Input
-                      name="11"
-                      transparent
-                      placeholder="Data..."
-                      onChange={this.handleChange}
-                      value={this.state.editedRounds.data ? this.state.editedRounds.data : null}
-                    />
-                  </Grid.Column>
-                  <Grid.Column width={4}>
-                    <Input
-                      name="12"
-                      transparent
-                      placeholder="Data..."
-                      onChange={this.handleChange}
-                      value={this.state.editedRounds.data ? this.state.editedRounds.data : null}
-                    />
-                  </Grid.Column>
-                  <Grid.Column width={4}>
-                    <Input
-                      onChange={this.handleChange}
-                      name="13"
-                      transparent
-                      placeholder="Data..."
-                      value={this.rounds(2)}
-                    />
-                  </Grid.Column>
-                </Grid.Row>
-
-                <Grid.Row>
-                  <Grid.Column textAlign="left" width={4}>
-                    Temperature Sensor
-                  </Grid.Column>
-                  <Grid.Column width={4}>
-                    <Input
-                      onChange={this.handleChange}
-                      name="21"
-                      transparent
-                      placeholder="Data..."
-                      value={this.rounds(3)}
-                    />
-                  </Grid.Column>
-                  <Grid.Column width={4}>
-                    <Input
-                      onChange={this.handleChange}
-                      name="22"
-                      transparent
-                      placeholder="Data..."
-                      value={this.rounds(4)}
-                    />
-                  </Grid.Column>
-                  <Grid.Column width={4}>
-                    <Input
-                      onChange={this.handleChange}
-                      name="23"
-                      transparent
-                      placeholder="Data..."
-                      value={this.rounds(5)}
-                    />
-                  </Grid.Column>
-                </Grid.Row>
+                {/* List of machines with their machine_round data */}
+                {this.state.machines.map(({ name, machine_rounds }) => {
+                  return (
+                    <Grid.Row>
+                      <Grid.Column textAlign="left" width={4}>
+                        {name}
+                      </Grid.Column>
+                      {machine_rounds.map(({ data, machine_id, round_id }) => {
+                        return (
+                          <Grid.Column width={4}>
+                            <Input
+                              name={`${machine_id}${round_id}`}
+                              transparent
+                              placeholder="Data..."
+                              value={data}
+                            />
+                          </Grid.Column>
+                        );
+                      })}
+                    </Grid.Row>
+                  );
+                })}
               </Grid>
             </Segment>
-          </Grid.Column>
-        </Grid.Row>
-        <Grid.Row centered>
-          <Grid.Column mobile={14} computer={10} widescreen={8}>
-            <Button primary floated="right" onClick={this.handleSubmit}>
-              Submit
-            </Button>
           </Grid.Column>
         </Grid.Row>
       </Grid>
