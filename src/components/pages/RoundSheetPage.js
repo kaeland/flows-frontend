@@ -8,6 +8,7 @@ import { parseMachineRounds } from "../../utils/helperFunctions";
 class RoundSheetPage extends Component {
   state = {
     activeItem: "tab1",
+    showDelete: false,
     machines: []
   };
 
@@ -74,7 +75,7 @@ class RoundSheetPage extends Component {
     }
   };
 
-  handleEnterKeyPress = e => {
+  handleMachineEnterKeyPress = e => {
     console.log("Event: ", e.target);
     console.log("Event value: ", e.target.value);
     console.log("Event id: ", e.target.id);
@@ -99,6 +100,25 @@ class RoundSheetPage extends Component {
     }
   };
 
+  addMachine = () => {
+    const options = {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${localStorage.token}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        machine: {
+          name: "",
+          plant_id: 1
+        }
+      })
+    };
+    fetch(`${APP_URL}/machines`, options)
+      .then(res => res.json())
+      .then(machines => this.setState({ machines }));
+  };
+
   render() {
     const { activeItem } = this.state;
     const rounds = () => {
@@ -110,6 +130,14 @@ class RoundSheetPage extends Component {
       <Grid>
         <Grid.Row centered>
           <Grid.Column mobile={14} computer={12} widescreen={8}>
+            {/* Place Roundsheet Buttons Below */}
+            <Grid.Row centered>
+              <Grid.Column mobile={14} computer={12} widescreen={8}>
+                <Button onClick={this.addMachine}>Add Machine</Button>
+                <Button onClick={() => this.setState({ showDelete: !this.state.showDelete })}>Delete Machines</Button>
+              </Grid.Column>
+            </Grid.Row>
+
             <Segment>
               <Grid padded celled>
                 {/* Row of Headers for the Table */}
@@ -127,43 +155,50 @@ class RoundSheetPage extends Component {
                 </Grid.Row>
 
                 {/* List of machines with their machine_round data */}
-                {this.state.machines.map(({ name, machine_rounds, id: id_of_machine }) => {
-                  return (
-                    <Grid.Row key={id_of_machine}>
-                      <Grid.Column textAlign="left" width={4}>
-                        <Input
-                          name={name}
-                          machine_id={id_of_machine}
-                          transparent
-                          placeholder="Machine name..."
-                          value={name}
-                          onChange={this.handleMachineChange}
-                          onKeyPress={this.handleEnterKeyPress}
-                          id={id_of_machine}
-                        />
-                      </Grid.Column>
-                      {machine_rounds.map(
-                        ({ data, machine_id, round_id, id }) => {
-                          return (
-                            <Grid.Column key={id} width={4}>
-                              <Input
-                                name={`${machine_id}${round_id}`}
-                                machine_id={machine_id}
-                                round_id={round_id}
-                                transparent
-                                placeholder="Data..."
-                                value={data}
-                                id={id}
-                                onChange={this.handleMachineRoundChange}
-                                onKeyPress={this.handleEnterKeyPress}
-                              />
-                            </Grid.Column>
-                          );
-                        }
-                      )}
-                    </Grid.Row>
-                  );
-                })}
+                {this.state.machines.map(
+                  ({ name, machine_rounds, id: id_of_machine }) => {
+                    return (
+                      <Grid.Row key={id_of_machine}>
+                        <Grid.Column textAlign="left" width={4}>
+                          { this.state.showDelete 
+                              ? <Button size="mini" style={{ marginRight: '10px' }}>X</Button>
+                              : null
+                          }
+                          
+                          <Input
+                            name={name}
+                            machine_id={id_of_machine}
+                            transparent
+                            placeholder="Machine name..."
+                            value={name}
+                            onChange={this.handleMachineChange}
+                            onKeyPress={this.handleMachineEnterKeyPress}
+                            id={id_of_machine}
+                          />
+                        </Grid.Column>
+                        {machine_rounds.map(
+                          ({ data, machine_id, round_id, id }) => {
+                            return (
+                              <Grid.Column key={id} width={4}>
+                                <Input
+                                  name={`${machine_id}${round_id}`}
+                                  machine_id={machine_id}
+                                  round_id={round_id}
+                                  transparent
+                                  placeholder="Data..."
+                                  value={data}
+                                  id={id}
+                                  onChange={this.handleMachineRoundChange}
+                                  onKeyPress={this.handleEnterKeyPress}
+                                />
+                              </Grid.Column>
+                            );
+                          }
+                        )}
+                      </Grid.Row>
+                    );
+                  }
+                )}
               </Grid>
             </Segment>
           </Grid.Column>

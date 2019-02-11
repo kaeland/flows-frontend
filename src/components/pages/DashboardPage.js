@@ -13,25 +13,6 @@ import {
 import { Grid, Segment, Table, Button } from "semantic-ui-react";
 
 class DashboardPage extends Component {
-  addMachine = () => {
-    const options = {
-      method: "POST",
-    headers: {
-      Authorization: `Bearer ${localStorage.token}`,
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      machine: {
-        name: '', 
-        plant_id: 1  
-      }
-    })
-  };
-    fetch(`${APP_URL}/machines`, options)
-      .then(res => res.json())
-      .then(console.log)
-  }
-
   render() {
     const data = [
       { x: 0, y: 8 },
@@ -64,12 +45,6 @@ class DashboardPage extends Component {
           </Grid.Row>
 
           <Grid.Row />
-          {/* Place Roundsheet Buttons Below */}
-          <Grid.Row centered>
-            <Grid.Column mobile={14} computer={12} widescreen={8}>
-              <Button onClick={this.addMachine}>Add Machine</Button>
-            </Grid.Column>
-          </Grid.Row>
 
           {/* Place Roundsheet Below */}
           <RoundSheetPage />
