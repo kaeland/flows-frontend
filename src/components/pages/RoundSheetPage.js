@@ -29,38 +29,45 @@ class RoundSheetPage extends Component {
 
   // handleItemClick = (e, { name }) => this.setState({ activeItem: name });
 
-  handleChange = (e, data) => {
+  handleMachineRoundChange = (e, data) => {
     console.log("Event: ", e, "Data: ", data);
     this.setState(state => {
-      return state.machines[data.machine_id - 1].machine_rounds.map((mr) => {
-        return mr.id === data.id 
-        ? mr.data = data.value
-        : mr 
-      })
+      return state.machines[data.machine_id - 1].machine_rounds.map(mr => {
+        return mr.id === data.id ? (mr.data = data.value) : mr;
+      });
     });
   };
-  
-  
-  
-  handleEnterKeyPress = (e) => {
+
+  handleMachineChange = (e, data) => {
+    console.log("Event: ", e, "Data: ", data);
+    this.setState(state => {
+      return state.machines.map(machine => {
+        return machine.id === data.machine_id
+          ? (machine.name = data.value)
+          : machine;
+      });
+    });
+  };
+
+  handleEnterKeyPress = e => {
     console.log("Event: ", e.target);
     console.log("Event value: ", e.target.value);
     console.log("Event id: ", e.target.id);
     console.log("Event key: ", e.key);
-    const { id, value } = e.target
+    const { id, value } = e.target;
     const options = {
-        method: "PATCH",
+      method: "PATCH",
       headers: {
         Authorization: `Bearer ${localStorage.token}`,
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
         machine_round: {
-          data: value 
+          data: value
         }
       })
     };
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       fetch(`${APP_URL}/machine_rounds/${id}`, options)
         .then(res => res.json())
         .then(console.log);
@@ -78,7 +85,6 @@ class RoundSheetPage extends Component {
       <Grid>
         <Grid.Row centered>
           <Grid.Column mobile={14} computer={12} widescreen={8}>
-
             <Segment>
               <Grid padded celled>
                 {/* Row of Headers for the Table */}
@@ -100,7 +106,15 @@ class RoundSheetPage extends Component {
                   return (
                     <Grid.Row key={id}>
                       <Grid.Column textAlign="left" width={4}>
-                        {name}
+                        <Input
+                          name={name}
+                          machine_id={id}
+                          transparent
+                          placeholder="Machine name..."
+                          value={name}
+                          onChange={this.handleMachineChange}
+                          onKeyPress={this.handleEnterKeyPress}
+                        />
                       </Grid.Column>
                       {machine_rounds.map(
                         ({ data, machine_id, round_id, id }) => {
@@ -114,7 +128,7 @@ class RoundSheetPage extends Component {
                                 placeholder="Data..."
                                 value={data}
                                 id={id}
-                                onChange={this.handleChange}
+                                onChange={this.handleMachineRoundChange}
                                 onKeyPress={this.handleEnterKeyPress}
                               />
                             </Grid.Column>
