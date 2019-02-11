@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import RoundSheetPage from "../pages/RoundSheetPage";
-import { APP_URL } from '../../utils/routes';
+import { APP_URL } from "../../utils/routes";
 import "../../../node_modules/react-vis/dist/style.css";
 import {
   XYPlot,
@@ -8,9 +8,12 @@ import {
   VerticalGridLines,
   HorizontalGridLines,
   XAxis,
-  YAxis
+  YAxis,
+  makeWidthFlexible
 } from "react-vis";
-import { Grid, Segment, Table, Button } from "semantic-ui-react";
+import { Grid, Segment, Table, Button, Container } from "semantic-ui-react";
+
+const FlexibleXYPlot = makeWidthFlexible(XYPlot);
 
 class DashboardPage extends Component {
   render() {
@@ -32,15 +35,17 @@ class DashboardPage extends Component {
           <Grid.Row centered>
             <Grid.Column mobile={14} computer={12} widescreen={8}>
               <h1>Dashboard Page</h1>
-              <Segment>
-                <XYPlot height={300} width={900}>
-                  <VerticalGridLines />
-                  <HorizontalGridLines />
-                  <XAxis />
-                  <YAxis />
-                  <LineSeries data={data} />
-                </XYPlot>
-              </Segment>
+
+                <Segment>
+                  <FlexibleXYPlot height={300}>
+                    <VerticalGridLines />
+                    <HorizontalGridLines />
+                    <XAxis />
+                    <YAxis />
+                    <LineSeries data={data} />
+                  </FlexibleXYPlot>
+                </Segment>
+
             </Grid.Column>
           </Grid.Row>
 
