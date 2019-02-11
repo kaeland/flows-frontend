@@ -119,6 +119,19 @@ class RoundSheetPage extends Component {
       .then(machines => this.setState({ machines }));
   };
 
+  deleteMachine = id => {
+    const options = {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${localStorage.token}`,
+        "Content-Type": "application/json"
+      }
+    };
+    fetch(`${APP_URL}/machines/${id}`, options)
+      .then(res => res.json())
+      .then(machines => this.setState({ machines }));
+  };
+
   render() {
     const { activeItem } = this.state;
     const rounds = () => {
@@ -134,7 +147,13 @@ class RoundSheetPage extends Component {
             <Grid.Row centered>
               <Grid.Column mobile={14} computer={12} widescreen={8}>
                 <Button onClick={this.addMachine}>Add Machine</Button>
-                <Button onClick={() => this.setState({ showDelete: !this.state.showDelete })}>Delete Machines</Button>
+                <Button
+                  onClick={() =>
+                    this.setState({ showDelete: !this.state.showDelete })
+                  }
+                >
+                  Delete Machines
+                </Button>
               </Grid.Column>
             </Grid.Row>
 
@@ -160,11 +179,16 @@ class RoundSheetPage extends Component {
                     return (
                       <Grid.Row key={id_of_machine}>
                         <Grid.Column textAlign="left" width={4}>
-                          { this.state.showDelete 
-                              ? <Button size="mini" style={{ marginRight: '10px' }}>X</Button>
-                              : null
-                          }
-                          
+                          {this.state.showDelete ? (
+                            <Button
+                              size="mini"
+                              style={{ marginRight: "10px" }}
+                              onClick={e => this.deleteMachine(id_of_machine)}
+                            >
+                              X
+                            </Button>
+                          ) : null}
+
                           <Input
                             name={name}
                             machine_id={id_of_machine}
