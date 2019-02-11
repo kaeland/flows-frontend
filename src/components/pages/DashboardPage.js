@@ -67,7 +67,7 @@ class DashboardPage extends Component {
           {/* Place Roundsheet Buttons Below */}
           <Grid.Row centered>
             <Grid.Column mobile={14} computer={12} widescreen={8}>
-              <Button>Add Machine</Button>
+              <Button onClick={this.addMachine}>Add Machine</Button>
             </Grid.Column>
           </Grid.Row>
 

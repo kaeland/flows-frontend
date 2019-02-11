@@ -74,6 +74,31 @@ class RoundSheetPage extends Component {
     }
   };
 
+  handleEnterKeyPress = e => {
+    console.log("Event: ", e.target);
+    console.log("Event value: ", e.target.value);
+    console.log("Event id: ", e.target.id);
+    console.log("Event key: ", e.key);
+    const { id, value } = e.target;
+    const options = {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${localStorage.token}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        machine: {
+          name: value
+        }
+      })
+    };
+    if (e.key === "Enter") {
+      fetch(`${APP_URL}/machines/${id}`, options)
+        .then(res => res.json())
+        .then(console.log);
+    }
+  };
+
   render() {
     const { activeItem } = this.state;
     const rounds = () => {
@@ -102,18 +127,19 @@ class RoundSheetPage extends Component {
                 </Grid.Row>
 
                 {/* List of machines with their machine_round data */}
-                {this.state.machines.map(({ name, machine_rounds, id }) => {
+                {this.state.machines.map(({ name, machine_rounds, id: id_of_machine }) => {
                   return (
-                    <Grid.Row key={id}>
+                    <Grid.Row key={id_of_machine}>
                       <Grid.Column textAlign="left" width={4}>
                         <Input
                           name={name}
-                          machine_id={id}
+                          machine_id={id_of_machine}
                           transparent
                           placeholder="Machine name..."
                           value={name}
                           onChange={this.handleMachineChange}
                           onKeyPress={this.handleEnterKeyPress}
+                          id={id_of_machine}
                         />
                       </Grid.Column>
                       {machine_rounds.map(
