@@ -1,6 +1,8 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import { loadChartData } from "../../redux/actions/chartActions";
 import RoundSheetPage from "../pages/RoundSheetPage";
-import { APP_URL } from "../../utils/routes";
+import { fetchChartData } from "../../utils/routes";
 import "../../../node_modules/react-vis/dist/style.css";
 import {
   XYPlot,
@@ -16,19 +18,17 @@ import { Grid, Segment, Table, Button, Container } from "semantic-ui-react";
 const FlexibleXYPlot = makeWidthFlexible(XYPlot);
 
 class DashboardPage extends Component {
+  componentDidMount() {
+    fetchChartData().then(data => this.props.loadChartData(data));
+  }
+
+  renderCharts = () => {
+    return this.props.chart.map(({ id, data }) => {
+      return <LineSeries key={id} data={data} />
+    })  
+  }
+
   render() {
-    const data = [
-      { x: 0, y: 8 },
-      { x: 1, y: 5 },
-      { x: 2, y: 4 },
-      { x: 3, y: 9 },
-      { x: 4, y: 1 },
-      { x: 5, y: 7 },
-      { x: 6, y: 6 },
-      { x: 7, y: 3 },
-      { x: 8, y: 2 },
-      { x: 9, y: 0 }
-    ];
     return (
       <div>
         <Grid>
@@ -36,16 +36,15 @@ class DashboardPage extends Component {
             <Grid.Column mobile={14} computer={12} widescreen={8}>
               <h1>Dashboard Page</h1>
 
-                <Segment>
-                  <FlexibleXYPlot height={300}>
-                    <VerticalGridLines />
-                    <HorizontalGridLines />
-                    <XAxis />
-                    <YAxis />
-                    <LineSeries data={data} />
-                  </FlexibleXYPlot>
-                </Segment>
-
+              <Segment>
+                <FlexibleXYPlot height={300}>
+                  <VerticalGridLines />
+                  <HorizontalGridLines />
+                  <XAxis />
+                  <YAxis />
+                  { this.renderCharts() }
+                </FlexibleXYPlot>
+              </Segment>
             </Grid.Column>
           </Grid.Row>
 
@@ -59,4 +58,20 @@ class DashboardPage extends Component {
   }
 }
 
-export default DashboardPage;
+const mapStateToProps = state => {
+  const { chart } = state
+  return {
+    chart
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    loadChartData: data => dispatch(loadChartData(data))
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(DashboardPage);
