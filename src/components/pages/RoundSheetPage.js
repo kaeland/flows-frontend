@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { loadChartData } from '../../redux/actions/chartActions'
 import _ from "lodash";
 import { Menu, Segment, Grid, Input, Button, Form } from "semantic-ui-react";
 import { APP_URL } from "../../utils/routes";
@@ -66,7 +67,7 @@ class RoundSheetPage extends Component {
     if (e.key === "Enter") {
       fetch(`${APP_URL}/machine_rounds/${id}`, options)
         .then(res => res.json())
-        .then(console.log);
+        .then(data => this.props.loadChartData(data));
     }
   };
 
@@ -227,18 +228,13 @@ class RoundSheetPage extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  const { machine } = state;
-  return { machine };
-};
-
 const mapDispatchToProps = dispatch => {
   return {
-    loadMachines: machines => dispatch(loadMachines(machines))
+    loadChartData: data => dispatch(loadChartData(data))
   };
 };
 
 export default connect(
-  mapStateToProps,
+  null,
   mapDispatchToProps
 )(RoundSheetPage);
