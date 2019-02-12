@@ -24,7 +24,7 @@ class DashboardPage extends Component {
 
   renderCharts = () => {
     return this.props.chart.map(({ id, data }) => {
-      return <LineSeries key={id} data={data} />
+      return <LineSeries key={id} data={data} curve={'curveMonotoneX'} />
     })  
   }
 

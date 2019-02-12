@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { loadChartData } from '../../redux/actions/chartActions'
+import { loadChartData } from "../../redux/actions/chartActions";
 import _ from "lodash";
 import { Menu, Segment, Grid, Input, Button, Form } from "semantic-ui-react";
 import { APP_URL } from "../../utils/routes";
@@ -34,8 +34,12 @@ class RoundSheetPage extends Component {
   handleMachineRoundChange = (e, data) => {
     console.log("Event: ", e, "Data: ", data);
     this.setState(state => {
-      return state.machines[data.machine_id - 1].machine_rounds.map(mr => {
-        return mr.id === data.id ? (mr.data = data.value) : mr;
+      return state.machines.map(machine => {
+        if (machine.id === data.machine_id) {
+          return machine.machine_rounds.map(mr => {
+            return mr.id === data.id ? (mr.data = data.value) : mr;
+          });
+        }
       });
     });
   };
