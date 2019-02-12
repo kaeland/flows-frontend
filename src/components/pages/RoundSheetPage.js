@@ -3,13 +3,12 @@ import { connect } from "react-redux";
 import _ from "lodash";
 import { Menu, Segment, Grid, Input, Button, Form } from "semantic-ui-react";
 import { APP_URL } from "../../utils/routes";
-import { parseMachineRounds } from "../../utils/helperFunctions";
+import { loadMachines } from "../../redux/actions/machineActions";
 
 class RoundSheetPage extends Component {
   state = {
     activeItem: "tab1",
-    showDelete: false,
-    machines: []
+    showDelete: false
   };
 
   componentDidMount() {
@@ -21,11 +20,7 @@ class RoundSheetPage extends Component {
     };
     fetch(`${APP_URL}/machines`, options)
       .then(res => res.json())
-      .then(machines =>
-        this.setState({
-          machines: machines
-        })
-      );
+      .then(machines => this.props.loadMachines(machines));
   }
 
   // handleItemClick = (e, { name }) => this.setState({ activeItem: name });
@@ -116,7 +111,7 @@ class RoundSheetPage extends Component {
     };
     fetch(`${APP_URL}/machines`, options)
       .then(res => res.json())
-      .then(machines => this.setState({ machines }));
+      .then(machines => this.props.loadMachines(machines));
   };
 
   deleteMachine = id => {
@@ -129,14 +124,14 @@ class RoundSheetPage extends Component {
     };
     fetch(`${APP_URL}/machines/${id}`, options)
       .then(res => res.json())
-      .then(machines => this.setState({ machines }));
+      .then(machines => this.props.loadMachines(machines));
   };
 
   render() {
     const { activeItem } = this.state;
     const rounds = () => {
-      return this.state.machines[0] !== undefined
-        ? this.state.machines[0].rounds
+      return this.props.machine[0] !== undefined
+        ? this.props.machine[0].rounds
         : [];
     };
     return (
@@ -174,7 +169,7 @@ class RoundSheetPage extends Component {
                 </Grid.Row>
 
                 {/* List of machines with their machine_round data */}
-                {this.state.machines.map(
+                {this.props.machine.map(
                   ({ name, machine_rounds, id: id_of_machine }) => {
                     return (
                       <Grid.Row key={id_of_machine}>
@@ -232,7 +227,18 @@ class RoundSheetPage extends Component {
   }
 }
 
+const mapStateToProps = state => {
+  const { machine } = state;
+  return { machine };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    loadMachines: machines => dispatch(loadMachines(machines))
+  };
+};
+
 export default connect(
-  null,
-  null
+  mapStateToProps,
+  mapDispatchToProps
 )(RoundSheetPage);
