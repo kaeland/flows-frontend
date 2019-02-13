@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { loadChartData } from "../../redux/actions/chartActions";
+import { loadPlantStats } from "../../redux/actions/plantActions";
 import RoundSheetPage from "../pages/RoundSheetPage";
 import { fetchChartData, fetchPlantStats } from "../../utils/routes";
 import "../../../node_modules/react-vis/dist/style.css";
@@ -19,7 +20,7 @@ import {
   Table,
   Button,
   Container,
-  Statistic, 
+  Statistic,
   Icon
 } from "semantic-ui-react";
 
@@ -28,7 +29,7 @@ const FlexibleXYPlot = makeWidthFlexible(XYPlot);
 class DashboardPage extends Component {
   componentDidMount() {
     fetchChartData().then(data => this.props.loadChartData(data));
-    fetchPlantStats().then(data => console.log(data))
+    fetchPlantStats().then(plant => this.props.loadPlantStats(plant));
   }
 
   renderCharts = () => {
@@ -49,12 +50,15 @@ class DashboardPage extends Component {
 
           {/* The Row for the Plant stats */}
           <Grid.Row centered>
-
             <Grid.Column mobile={5} computer={4} widescreen={3}>
               <Segment>
-                <Statistic color="blue" style={{ display: "inline" }} size="large">
+                <Statistic
+                  color="blue"
+                  style={{ display: "inline" }}
+                  size="large"
+                >
                   <Statistic.Value>
-                    <Icon name="cogs" />5
+                    <Icon name="cogs" />{this.props.plant.machine_count}
                   </Statistic.Value>
                   <Statistic.Label>Machines</Statistic.Label>
                 </Statistic>
@@ -62,27 +66,34 @@ class DashboardPage extends Component {
             </Grid.Column>
 
             <Grid.Column mobile={5} computer={4} widescreen={3}>
-            <Segment>
-            <Statistic color="green" style={{ display: "inline" }} size="large">
-              <Statistic.Value>
-                <Icon name="chart bar outline" />5
-              </Statistic.Value>
-              <Statistic.Label>Unique Data Points</Statistic.Label>
-            </Statistic>
-          </Segment>
+              <Segment>
+                <Statistic
+                  color="green"
+                  style={{ display: "inline" }}
+                  size="large"
+                >
+                  <Statistic.Value>
+                    <Icon name="chart bar outline" />{this.props.plant.data_point_count}
+                  </Statistic.Value>
+                  <Statistic.Label>Unique Data Points</Statistic.Label>
+                </Statistic>
+              </Segment>
             </Grid.Column>
 
             <Grid.Column mobile={5} computer={4} widescreen={3}>
-            <Segment>
-            <Statistic color="violet" style={{ display: "inline" }} size="large">
-              <Statistic.Value>
-                <Icon name="user circle" />5
-              </Statistic.Value>
-              <Statistic.Label>Users</Statistic.Label>
-            </Statistic>
-          </Segment>
+              <Segment>
+                <Statistic
+                  color="violet"
+                  style={{ display: "inline" }}
+                  size="large"
+                >
+                  <Statistic.Value>
+                    <Icon name="user circle" />{this.props.plant.user_count}
+                  </Statistic.Value>
+                  <Statistic.Label>Users</Statistic.Label>
+                </Statistic>
+              </Segment>
             </Grid.Column>
-
           </Grid.Row>
 
           {/* The Row for the Chart */}
@@ -111,15 +122,17 @@ class DashboardPage extends Component {
 }
 
 const mapStateToProps = state => {
-  const { chart } = state;
+  const { chart, plant } = state;
   return {
-    chart
+    chart, 
+    plant
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    loadChartData: data => dispatch(loadChartData(data))
+    loadChartData: data => dispatch(loadChartData(data)),
+    loadPlantStats: plant => dispatch(loadPlantStats(plant))
   };
 };
 

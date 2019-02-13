@@ -153,6 +153,7 @@ class RoundSheetPage extends Component {
               <Grid.Column mobile={15} computer={12} widescreen={9}>
                 <Button color="green" onClick={this.addMachine}>Add Machine</Button>
                 <Button 
+                  basic
                   color="violet"
                   style={{ marginLeft: '5px' }}
                   onClick={() =>
@@ -179,7 +180,7 @@ class RoundSheetPage extends Component {
                     );
                   })}
                 </Grid.Row>
-
+                
                 {/* List of machines with their machine_round data */}
                 {this.state.machines.map(
                   ({ name, machine_rounds, id: id_of_machine }) => {
@@ -188,6 +189,7 @@ class RoundSheetPage extends Component {
                         <Grid.Column textAlign="left" width={4}>
                           {this.state.showDelete ? (
                             <Button
+                              basic
                               size="mini"
                               color="violet"
                               style={{ marginRight: "10px" }}
