@@ -36,3 +36,7 @@ export const editProfile = (id, options) => {
     res.json()
   );
 };
+
+export const fetchRounds = () => {
+  return fetch(`${APP_URL}/rounds`, options()).then(res => res.json())
+}

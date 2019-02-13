@@ -5,11 +5,13 @@ import profile from "./profile";
 import machineRound from "./machineRound";
 import chart from "./chart";
 import plant from "./plant";
+import round from "./round";
 
 export default combineReducers({
   auth,
   nav,
   profile,
-  chart, 
-  plant
+  chart,
+  plant, 
+  round
 });
