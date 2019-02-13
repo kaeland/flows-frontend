@@ -14,7 +14,6 @@ class LoginPage extends Component {
     this.setState({
       [e.target.name]: value
     });
-    // console.log("Name: ", e.target.name, "Value: ", value);
   };
 
   login = e => {
@@ -51,9 +50,10 @@ class LoginPage extends Component {
   render() {
     return (
       <Grid verticalAlign="middle">
+
         <Grid.Row centered>
           <Grid.Column mobile={14} computer={8} widescreen={8}>
-            <Segment>
+            <Segment style={{ marginTop: '50px' }} color="blue">
               <h1>Login:</h1>
               <Form onSubmit={this.login}>
                 <Form.Input
@@ -68,7 +68,7 @@ class LoginPage extends Component {
                   placeholder="Password..."
                   onChange={this.handleChange}
                 />
-                <Button type="submit">Submit</Button>
+                <Button color="green" type="submit">Submit</Button>
               </Form>
             </Segment>
           </Grid.Column>

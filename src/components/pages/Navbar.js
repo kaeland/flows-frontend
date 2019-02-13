@@ -4,6 +4,7 @@ import { signout } from "../../redux/actions/authActions";
 import { hideSidebar, showSidebar } from "../../redux/actions/navActions";
 import { Menu, Button } from "semantic-ui-react";
 import { Link } from "react-router-dom";
+import '../../Navbar.css'
 
 class Navbar extends Component {
   // Sign the user out
@@ -14,27 +15,24 @@ class Navbar extends Component {
   };
 
   handleSidebar = () => {
-    const { visible, showSidebar, hideSidebar } = this.props
+    const { visible, showSidebar, hideSidebar } = this.props;
     if (visible === false) {
-      showSidebar()
+      showSidebar();
     } else {
-      hideSidebar()
+      hideSidebar();
     }
-  }
+  };
 
   render() {
     const loggedIn = localStorage.token ? true : false;
     return (
-      <Menu color="blue">
-        <Menu.Item 
-        header
-        onClick={this.handleSidebar}
-        >Flows</Menu.Item>
+      <Menu color="blue" inverted>
+        <Menu.Item header onClick={this.handleSidebar} as="h3">
+          Flows
+        </Menu.Item>
         {loggedIn ? (
           <Menu.Menu position="right">
-            <Menu.Item>
-              <Button onClick={this.handleClick}>Sign out</Button>
-            </Menu.Item>
+            <Menu.Item onClick={this.handleClick}>Sign out</Menu.Item>
           </Menu.Menu>
         ) : (
           <Menu.Menu position="right">
@@ -45,7 +43,7 @@ class Navbar extends Component {
             </Menu.Item>
             <Menu.Item>
               <Link to="/login">
-                <Button>Login</Button>
+                <Button color="green">Login</Button>
               </Link>
             </Menu.Item>
           </Menu.Menu>
@@ -58,15 +56,15 @@ class Navbar extends Component {
 const mapDispatchToProps = dispatch => {
   return {
     signout: () => dispatch(signout()),
-    hideSidebar: () => dispatch(hideSidebar()), 
+    hideSidebar: () => dispatch(hideSidebar()),
     showSidebar: () => dispatch(showSidebar())
   };
 };
 
 const mapStateToProps = state => {
-  const { visible } = state.nav 
-  return { visible }
-}
+  const { visible } = state.nav;
+  return { visible };
+};
 
 export default connect(
   mapStateToProps,
