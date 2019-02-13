@@ -7,9 +7,9 @@ import { createStore } from "redux";
 import App from "./App";
 import rootReducer from "./redux/reducers";
 import * as serviceWorker from "./serviceWorker";
-import './styles.css'
+import "./styles.css";
 
-// Development: 
+// Development:
 // const store = createStore(rootReducer, composeWithDevTools());
 
 // Production:
