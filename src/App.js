@@ -38,7 +38,7 @@ class App extends Component {
     const loggedIn = localStorage.token !== undefined;
     return (
       <div style={{ height: "1000px" }}>
-        <Route path="/" component={Navbar} />
+        <Route component={Navbar} />
         <Switch>
           <Route path="/login" exact component={LoginPage} />
           <Route
@@ -89,7 +89,6 @@ class App extends Component {
               loggedIn ? <DashboardPage {...props} /> : <Redirect to="/login" />
             }
           />
-          <Route component={NotFoundPage} />
         </Switch>
       </div>
     );
