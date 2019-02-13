@@ -9,7 +9,11 @@ import rootReducer from "./redux/reducers";
 import * as serviceWorker from "./serviceWorker";
 import './styles.css'
 
-const store = createStore(rootReducer, composeWithDevTools());
+// Development: 
+// const store = createStore(rootReducer, composeWithDevTools());
+
+// Production:
+const store = createStore(rootReducer);
 
 ReactDOM.render(
   <Provider store={store}>
