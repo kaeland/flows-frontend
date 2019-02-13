@@ -39,15 +39,20 @@ class LoginPage extends Component {
         if (message === "success") {
           localStorage.setItem("token", jwt);
           this.props.login(user);
+          this.props.history.push("/dashboard")
+
+          // Debugger shows this keyword as undefined. May be why it doesn't push
+          // dashboard page. Why does this happen? 
+
           // debugger;
         } else {
           // console.log(data)
           this.props.error({ message });
         }
       })
-      .then(this.props.history.push("/dashboard"));
+      // .then(this.props.history.push("/dashboard"));
   };
-  
+
   render() {
     return (
       <Grid verticalAlign="middle">

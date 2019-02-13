@@ -26,7 +26,7 @@ class ProfilePage extends Component {
           <Grid.Column mobile={14} computer={10} widescreen={8}>
             <div style={{ marginTop: '75px' }}>
               <Card color="blue" centered>
-                <Image src={avatar} />
+                <Image src={avatar} size="large" />
                 <Card.Content>
                   <Card.Header>
                     {first_name} {last_name}
