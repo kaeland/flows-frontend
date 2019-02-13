@@ -8,11 +8,18 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-html, body, .Index-component {
-  height: 100%
+body, html {
+  height: 100%;
+  margin: 0;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+.home {
+  background: lightblue url(./water-unsplash.jpg) no-repeat fixed center; 
+  background-size: auto;
+
 }

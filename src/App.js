@@ -30,6 +30,7 @@ import RoundSheetPage from "./components/pages/RoundSheetPage";
 import DashboardPage from "./components/pages/DashboardPage";
 import EditProfilePage from "./components/pages/EditProfilePage";
 import NotFoundPage from "./components/pages/NotFoundPage";
+import IndexPage from "./components/pages/IndexPage"
 
 class App extends Component {
   handleSidebarHide = () => this.props.hideSidebar();
@@ -37,8 +38,9 @@ class App extends Component {
   routes = () => {
     const loggedIn = localStorage.token !== undefined;
     return (
-      <div style={{ height: "1000px" }}>
+      <div style={{ height: "1280px" }}>
         <Route component={Navbar} />
+        <Route path="/" exact component={IndexPage} />
         <Switch>
           <Route path="/login" exact component={LoginPage} />
           <Route
