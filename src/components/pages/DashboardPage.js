@@ -13,7 +13,15 @@ import {
   YAxis,
   makeWidthFlexible
 } from "react-vis";
-import { Grid, Segment, Table, Button, Container } from "semantic-ui-react";
+import {
+  Grid,
+  Segment,
+  Table,
+  Button,
+  Container,
+  Statistic, 
+  Icon
+} from "semantic-ui-react";
 
 const FlexibleXYPlot = makeWidthFlexible(XYPlot);
 
@@ -24,9 +32,9 @@ class DashboardPage extends Component {
 
   renderCharts = () => {
     return this.props.chart.map(({ id, data }) => {
-      return <LineSeries key={id} data={data} curve={'curveMonotoneX'} />
-    })  
-  }
+      return <LineSeries key={id} data={data} curve={"curveMonotoneX"} />;
+    });
+  };
 
   render() {
     return (
@@ -34,15 +42,58 @@ class DashboardPage extends Component {
         <Grid>
           <Grid.Row centered>
             <Grid.Column mobile={14} computer={12} widescreen={8}>
-              <h1>Dashboard Page</h1>
+              <h1>Dashboard</h1>
+            </Grid.Column>
+          </Grid.Row>
 
+          {/* The Row for the Plant stats */}
+          <Grid.Row centered>
+
+            <Grid.Column mobile={5} computer={4} widescreen={3}>
+              <Segment>
+                <Statistic style={{ display: "inline" }} size="large">
+                  <Statistic.Value>
+                    <Icon name="cogs" />5
+                  </Statistic.Value>
+                  <Statistic.Label>Machines</Statistic.Label>
+                </Statistic>
+              </Segment>
+            </Grid.Column>
+
+            <Grid.Column mobile={5} computer={4} widescreen={3}>
+            <Segment>
+            <Statistic style={{ display: "inline" }} size="large">
+              <Statistic.Value>
+                <Icon name="chart bar outline" />5
+              </Statistic.Value>
+              <Statistic.Label>Unique Data Points</Statistic.Label>
+            </Statistic>
+          </Segment>
+            </Grid.Column>
+
+            <Grid.Column mobile={5} computer={4} widescreen={3}>
+            <Segment>
+            <Statistic style={{ display: "inline" }} size="large">
+              <Statistic.Value>
+                <Icon name="user circle" />5
+              </Statistic.Value>
+              <Statistic.Label>Users</Statistic.Label>
+            </Statistic>
+          </Segment>
+            </Grid.Column>
+
+          </Grid.Row>
+
+          {/* The Row for the Chart */}
+          <Grid.Row centered>
+            <Grid.Column mobile={15} computer={12} widescreen={9}>
               <Segment>
                 <FlexibleXYPlot height={300}>
                   <VerticalGridLines />
                   <HorizontalGridLines />
                   <XAxis />
                   <YAxis />
-                  { this.renderCharts() }
+                  {this.renderCharts()}
                 </FlexibleXYPlot>
               </Segment>
             </Grid.Column>
@@ -50,7 +101,7 @@ class DashboardPage extends Component {
 
           <Grid.Row />
 
-          {/* Place Roundsheet Below */}
+          {/* The Row for the Roundsheet */}
           <RoundSheetPage />
         </Grid>
       </div>
@@ -59,7 +110,7 @@ class DashboardPage extends Component {
 }
 
 const mapStateToProps = state => {
-  const { chart } = state
+  const { chart } = state;
   return {
     chart
   };

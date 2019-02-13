@@ -147,12 +147,14 @@ class RoundSheetPage extends Component {
     return (
       <Grid>
         <Grid.Row centered>
-          <Grid.Column mobile={14} computer={12} widescreen={8}>
+          <Grid.Column mobile={15} computer={12} widescreen={9}>
             {/* Place Roundsheet Buttons Below */}
             <Grid.Row centered>
-              <Grid.Column mobile={14} computer={12} widescreen={8}>
-                <Button onClick={this.addMachine}>Add Machine</Button>
-                <Button
+              <Grid.Column mobile={15} computer={12} widescreen={9}>
+                <Button color="green" onClick={this.addMachine}>Add Machine</Button>
+                <Button 
+                  color="violet"
+                  style={{ marginLeft: '5px' }}
                   onClick={() =>
                     this.setState({ showDelete: !this.state.showDelete })
                   }
@@ -166,12 +168,12 @@ class RoundSheetPage extends Component {
               <Grid padded celled>
                 {/* Row of Headers for the Table */}
                 <Grid.Row>
-                  <Grid.Column as="h5" textAlign="left" width={4}>
+                  <Grid.Column as="h4" textAlign="left" width={4}>
                     Machines
                   </Grid.Column>
                   {rounds().map(({ time_of_day, id }) => {
                     return (
-                      <Grid.Column key={id} as="h5" width={4}>
+                      <Grid.Column key={id} as="h4" width={4}>
                         {time_of_day}
                       </Grid.Column>
                     );
@@ -187,6 +189,7 @@ class RoundSheetPage extends Component {
                           {this.state.showDelete ? (
                             <Button
                               size="mini"
+                              color="violet"
                               style={{ marginRight: "10px" }}
                               onClick={e => this.deleteMachine(id_of_machine)}
                             >

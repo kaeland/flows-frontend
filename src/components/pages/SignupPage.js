@@ -53,7 +53,14 @@ class LoginPage extends Component {
       <Grid>
         <Grid.Row centered>
           <Grid.Column mobile={14} computer={8} widescreen={8}>
-            <Segment>
+            <Message color="blue">
+              <h4>Use the form below to sign up to the Flows App</h4>
+            </Message>
+          </Grid.Column>
+        </Grid.Row>
+        <Grid.Row centered>
+          <Grid.Column mobile={14} computer={8} widescreen={8}>
+            <Segment style={{ marginTop: "50px" }} color="blue">
               <h1>Sign up:</h1>
               <Form onSubmit={this.login}>
                 <Form.Input
@@ -68,7 +75,9 @@ class LoginPage extends Component {
                   placeholder="Password..."
                   onChange={this.handleChange}
                 />
-                <Button type="submit">Submit</Button>
+                <Button color="green" type="submit">
+                  Submit
+                </Button>
               </Form>
             </Segment>
           </Grid.Column>
