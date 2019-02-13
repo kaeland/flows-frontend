@@ -1,4 +1,8 @@
-export const APP_URL = "http://localhost:3000/api/v1";
+// Development URL:
+// export const APP_URL = "http://localhost:3000/api/v1";
+
+// Production URL:
+export const APP_URL = "https://powerful-cliffs-29153.herokuapp.com/api/v1";
 
 const options = (method = "GET") => {
   return {
