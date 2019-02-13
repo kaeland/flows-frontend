@@ -26,6 +26,7 @@ import RoundsPage from "./components/pages/RoundsPage";
 import ProfilePage from "./components/pages/ProfilePage";
 import RoundSheetPage from "./components/pages/RoundSheetPage";
 import DashboardPage from "./components/pages/DashboardPage";
+import EditProfilePage from "./components/pages/EditProfilePage";
 
 class App extends Component {
   handleSidebarHide = () => this.props.hideSidebar();
@@ -50,6 +51,11 @@ class App extends Component {
           path="/profile"
           exact
           render={(props) => (loggedIn ? <ProfilePage {...props} /> : <Redirect to="/login" />)}
+        />
+        <Route
+          path="/profile/edit"
+          exact
+          render={(props) => (loggedIn ? <EditProfilePage {...props} /> : <Redirect to="/login" />)}
         />
         <Route
           path="/roundsheet"

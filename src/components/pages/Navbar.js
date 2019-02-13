@@ -25,7 +25,7 @@ class Navbar extends Component {
   render() {
     const loggedIn = localStorage.token ? true : false;
     return (
-      <Menu>
+      <Menu color="blue">
         <Menu.Item 
         header
         onClick={this.handleSidebar}

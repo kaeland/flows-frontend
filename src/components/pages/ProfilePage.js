@@ -24,26 +24,30 @@ class ProfilePage extends Component {
       <Grid>
         <Grid.Row centered>
           <Grid.Column mobile={14} computer={10} widescreen={8}>
-            <h1>Profile Page</h1>
-            <Card>
-              <Image src={avatar} />
-              <Card.Content>
-                <Card.Header>
-                  {first_name} {last_name}
-                </Card.Header>
-                <Card.Description>{bio}</Card.Description>
-              </Card.Content>
-              <Card.Content>
-                <Icon name="industry" />
-                Plant: {plant === undefined ? null : plant.name}
-              </Card.Content>
-            </Card>
+            <div style={{ marginTop: '75px' }}>
+              <Card color="blue" centered>
+                <Image src={avatar} />
+                <Card.Content>
+                  <Card.Header>
+                    {first_name} {last_name}
+                  </Card.Header>
+                  <Card.Description>Bio: {bio}</Card.Description>
+                </Card.Content>
+                <Card.Content>
+                  <Button
+                    primary
+                    fluid
+                    onClick={() => this.props.history.push("/profile/edit")}
+                  >
+                    Edit
+                  </Button>
+                </Card.Content>
+              </Card>
+            </div>
           </Grid.Column>
         </Grid.Row>
         <Grid.Row centered>
-          <Grid.Column mobile={14} computer={10} widescreen={8}>
-            <Button primary>Edit</Button>
-          </Grid.Column>
+          <Grid.Column mobile={14} computer={10} widescreen={8} />
         </Grid.Row>
       </Grid>
     );
