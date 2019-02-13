@@ -137,6 +137,18 @@ class RoundSheetPage extends Component {
       .then(machines => this.setState({ machines }));
   };
 
+  renderHeader = () => {
+    if (this.props.match.url === "/roundsheet") {
+      return (
+        <Grid.Row centered>
+          <Grid.Column mobile={15} computer={12} widescreen={9}>
+            <h1>Roundsheet:</h1> 
+          </Grid.Column>
+        </Grid.Row>
+      )
+    }
+  }
+
   render() {
     const { activeItem } = this.state;
     const rounds = () => {
@@ -146,6 +158,7 @@ class RoundSheetPage extends Component {
     };
     return (
       <Grid>
+      { this.renderHeader() }
         <Grid.Row centered>
           <Grid.Column mobile={15} computer={12} widescreen={9}>
             {/* Place Roundsheet Buttons Below */}

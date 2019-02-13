@@ -68,8 +68,8 @@ class App extends Component {
         <Route
           path="/dashboard"
           exact
-          render={() =>
-            loggedIn ? <DashboardPage /> : <Redirect to="/login" />
+          render={(props) =>
+            loggedIn ? <DashboardPage {...props} /> : <Redirect to="/login" />
           }
         />
       </div>

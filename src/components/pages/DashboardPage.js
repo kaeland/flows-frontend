@@ -114,7 +114,7 @@ class DashboardPage extends Component {
           <Grid.Row />
 
           {/* The Row for the Roundsheet */}
-          <RoundSheetPage />
+          <RoundSheetPage match={this.props.match} />
         </Grid>
       </div>
     );
