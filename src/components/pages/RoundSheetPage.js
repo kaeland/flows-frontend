@@ -1,6 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import {
+  fetchChartData,
+  fetchPlantStats,
+  fetchProfile
+} from "../../utils/routes";
 import { loadChartData } from "../../redux/actions/chartActions";
+import { loadPlantStats } from "../../redux/actions/plantActions";
 import _ from "lodash";
 import { Menu, Segment, Grid, Input, Button, Form } from "semantic-ui-react";
 import { APP_URL } from "../../utils/routes";
@@ -142,12 +148,12 @@ class RoundSheetPage extends Component {
       return (
         <Grid.Row centered>
           <Grid.Column mobile={15} computer={12} widescreen={9}>
-            <h1>Roundsheet:</h1> 
+            <h1>Roundsheet:</h1>
           </Grid.Column>
         </Grid.Row>
-      )
+      );
     }
-  }
+  };
 
   render() {
     const { activeItem } = this.state;
@@ -158,17 +164,19 @@ class RoundSheetPage extends Component {
     };
     return (
       <Grid>
-      { this.renderHeader() }
+        {this.renderHeader()}
         <Grid.Row centered>
           <Grid.Column mobile={15} computer={12} widescreen={9}>
             {/* Place Roundsheet Buttons Below */}
             <Grid.Row centered>
               <Grid.Column mobile={15} computer={12} widescreen={9}>
-                <Button color="green" onClick={this.addMachine}>Add Machine</Button>
-                <Button 
+                <Button color="green" onClick={this.addMachine}>
+                  Add Machine
+                </Button>
+                <Button
                   basic
                   color="violet"
-                  style={{ marginLeft: '5px' }}
+                  style={{ marginLeft: "5px" }}
                   onClick={() =>
                     this.setState({ showDelete: !this.state.showDelete })
                   }
@@ -193,7 +201,7 @@ class RoundSheetPage extends Component {
                     );
                   })}
                 </Grid.Row>
-                
+
                 {/* List of machines with their machine_round data */}
                 {this.state.machines.map(
                   ({ name, machine_rounds, id: id_of_machine }) => {
@@ -257,7 +265,8 @@ class RoundSheetPage extends Component {
 
 const mapDispatchToProps = dispatch => {
   return {
-    loadChartData: data => dispatch(loadChartData(data))
+    loadChartData: data => dispatch(loadChartData(data)),
+    loadPlantStats: plant => dispatch(loadPlantStats(plant))
   };
 };
 
