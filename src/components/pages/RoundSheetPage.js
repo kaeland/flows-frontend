@@ -10,12 +10,13 @@ import { loadPlantStats } from "../../redux/actions/plantActions";
 import _ from "lodash";
 import { Menu, Segment, Grid, Input, Button, Form } from "semantic-ui-react";
 import { APP_URL } from "../../utils/routes";
-import { loadMachines } from "../../redux/actions/machineActions";
+import { parseMachineRounds } from "../../utils/helperFunctions";
 
 class RoundSheetPage extends Component {
   state = {
     activeItem: "tab1",
-    showDelete: false
+    showDelete: false,
+    machines: []
   };
 
   componentDidMount() {
@@ -27,7 +28,11 @@ class RoundSheetPage extends Component {
     };
     fetch(`${APP_URL}/machines`, options)
       .then(res => res.json())
-      .then(machines => this.props.loadMachines(machines));
+      .then(machines =>
+        this.setState({
+          machines: machines
+        })
+      );
   }
 
   // handleItemClick = (e, { name }) => this.setState({ activeItem: name });
@@ -122,7 +127,7 @@ class RoundSheetPage extends Component {
     };
     fetch(`${APP_URL}/machines`, options)
       .then(res => res.json())
-      .then(machines => this.props.loadMachines(machines));
+      .then(machines => this.setState({ machines }));
   };
 
   deleteMachine = id => {
@@ -135,7 +140,7 @@ class RoundSheetPage extends Component {
     };
     fetch(`${APP_URL}/machines/${id}`, options)
       .then(res => res.json())
-      .then(machines => this.props.loadMachines(machines));
+      .then(machines => this.setState({ machines }));
   };
 
   renderHeader = () => {
@@ -153,8 +158,8 @@ class RoundSheetPage extends Component {
   render() {
     const { activeItem } = this.state;
     const rounds = () => {
-      return this.props.machine[0] !== undefined
-        ? this.props.machine[0].rounds
+      return this.state.machines[0] !== undefined
+        ? this.state.machines[0].rounds
         : [];
     };
     return (
@@ -198,7 +203,7 @@ class RoundSheetPage extends Component {
                 </Grid.Row>
 
                 {/* List of machines with their machine_round data */}
-                {this.props.machine.map(
+                {this.state.machines.map(
                   ({ name, machine_rounds, id: id_of_machine }) => {
                     return (
                       <Grid.Row key={id_of_machine}>
