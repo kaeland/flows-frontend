@@ -5,8 +5,10 @@ import {
   BrowserRouter as Router,
   Route,
   Link,
-  Redirect
+  Redirect,
+  Switch
 } from "react-router-dom";
+import "./App.css";
 
 import {
   Button,
@@ -26,6 +28,8 @@ import RoundsPage from "./components/pages/RoundsPage";
 import ProfilePage from "./components/pages/ProfilePage";
 import RoundSheetPage from "./components/pages/RoundSheetPage";
 import DashboardPage from "./components/pages/DashboardPage";
+import EditProfilePage from "./components/pages/EditProfilePage";
+import NotFoundPage from "./components/pages/NotFoundPage";
 
 class App extends Component {
   handleSidebarHide = () => this.props.hideSidebar();
@@ -35,36 +39,58 @@ class App extends Component {
     return (
       <div style={{ height: "1000px" }}>
         <Route path="/" component={Navbar} />
-        <Route path="/login" exact component={LoginPage} />
-        <Route
-          path="/signup"
-          exact
-          render={(props) => (loggedIn ? <SignupPage {...props} /> : <Redirect to="/login" />)}
-        />
-        <Route
-          path="/rounds"
-          exact
-          render={(props) => (loggedIn ? <RoundsPage {...props} /> : <Redirect to="/login" />)}
-        />
-        <Route
-          path="/profile"
-          exact
-          render={(props) => (loggedIn ? <ProfilePage {...props} /> : <Redirect to="/login" />)}
-        />
-        <Route
-          path="/roundsheet"
-          exact
-          render={(props) =>
-            loggedIn ? <RoundSheetPage {...props} /> : <Redirect to="/login" />
-          }
-        />
-        <Route
-          path="/dashboard"
-          exact
-          render={() =>
-            loggedIn ? <DashboardPage /> : <Redirect to="/login" />
-          }
-        />
+        <Switch>
+          <Route path="/login" exact component={LoginPage} />
+          <Route
+            path="/signup"
+            exact
+            render={props => <SignupPage {...props} />}
+          />
+          <Route
+            path="/rounds"
+            exact
+            render={props =>
+              loggedIn ? <RoundsPage {...props} /> : <Redirect to="/login" />
+            }
+          />
+          <Route
+            path="/profile"
+            exact
+            render={props =>
+              loggedIn ? <ProfilePage {...props} /> : <Redirect to="/login" />
+            }
+          />
+          <Route
+            path="/profile/edit"
+            exact
+            render={props =>
+              loggedIn ? (
+                <EditProfilePage {...props} />
+              ) : (
+                <Redirect to="/login" />
+              )
+            }
+          />
+          <Route
+            path="/roundsheet"
+            exact
+            render={props =>
+              loggedIn ? (
+                <RoundSheetPage {...props} />
+              ) : (
+                <Redirect to="/login" />
+              )
+            }
+          />
+          <Route
+            path="/dashboard"
+            exact
+            render={props =>
+              loggedIn ? <DashboardPage {...props} /> : <Redirect to="/login" />
+            }
+          />
+          <Route component={NotFoundPage} />
+        </Switch>
       </div>
     );
   };

@@ -1,6 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { loadChartData } from '../../redux/actions/chartActions'
+import {
+  fetchChartData,
+  fetchPlantStats,
+  fetchProfile
+} from "../../utils/routes";
+import { loadChartData } from "../../redux/actions/chartActions";
+import { loadPlantStats } from "../../redux/actions/plantActions";
 import _ from "lodash";
 import { Menu, Segment, Grid, Input, Button, Form } from "semantic-ui-react";
 import { APP_URL } from "../../utils/routes";
@@ -29,8 +35,12 @@ class RoundSheetPage extends Component {
   handleMachineRoundChange = (e, data) => {
     console.log("Event: ", e, "Data: ", data);
     this.setState(state => {
-      return state.machines[data.machine_id - 1].machine_rounds.map(mr => {
-        return mr.id === data.id ? (mr.data = data.value) : mr;
+      return state.machines.map(machine => {
+        if (machine.id === data.machine_id) {
+          return machine.machine_rounds.map(mr => {
+            return mr.id === data.id ? (mr.data = data.value) : mr;
+          });
+        }
       });
     });
   };
@@ -128,6 +138,18 @@ class RoundSheetPage extends Component {
       .then(machines => this.props.loadMachines(machines));
   };
 
+  renderHeader = () => {
+    if (this.props.match.url === "/roundsheet") {
+      return (
+        <Grid.Row centered>
+          <Grid.Column mobile={15} computer={12} widescreen={9}>
+            <h1>Roundsheet:</h1>
+          </Grid.Column>
+        </Grid.Row>
+      );
+    }
+  };
+
   render() {
     const { activeItem } = this.state;
     const rounds = () => {
@@ -137,13 +159,19 @@ class RoundSheetPage extends Component {
     };
     return (
       <Grid>
+        {this.renderHeader()}
         <Grid.Row centered>
-          <Grid.Column mobile={14} computer={12} widescreen={8}>
+          <Grid.Column mobile={15} computer={12} widescreen={9}>
             {/* Place Roundsheet Buttons Below */}
             <Grid.Row centered>
-              <Grid.Column mobile={14} computer={12} widescreen={8}>
-                <Button onClick={this.addMachine}>Add Machine</Button>
+              <Grid.Column mobile={15} computer={12} widescreen={9}>
+                <Button color="green" onClick={this.addMachine}>
+                  Add Machine
+                </Button>
                 <Button
+                  basic
+                  color="violet"
+                  style={{ marginLeft: "5px" }}
                   onClick={() =>
                     this.setState({ showDelete: !this.state.showDelete })
                   }
@@ -157,12 +185,12 @@ class RoundSheetPage extends Component {
               <Grid padded celled>
                 {/* Row of Headers for the Table */}
                 <Grid.Row>
-                  <Grid.Column as="h5" textAlign="left" width={4}>
+                  <Grid.Column as="h4" textAlign="left" width={4}>
                     Machines
                   </Grid.Column>
                   {rounds().map(({ time_of_day, id }) => {
                     return (
-                      <Grid.Column key={id} as="h5" width={4}>
+                      <Grid.Column key={id} as="h4" width={4}>
                         {time_of_day}
                       </Grid.Column>
                     );
@@ -177,7 +205,9 @@ class RoundSheetPage extends Component {
                         <Grid.Column textAlign="left" width={4}>
                           {this.state.showDelete ? (
                             <Button
+                              basic
                               size="mini"
+                              color="violet"
                               style={{ marginRight: "10px" }}
                               onClick={e => this.deleteMachine(id_of_machine)}
                             >
@@ -230,7 +260,8 @@ class RoundSheetPage extends Component {
 
 const mapDispatchToProps = dispatch => {
   return {
-    loadChartData: data => dispatch(loadChartData(data))
+    loadChartData: data => dispatch(loadChartData(data)),
+    loadPlantStats: plant => dispatch(loadPlantStats(plant))
   };
 };
 

@@ -4,6 +4,7 @@ import { signout } from "../../redux/actions/authActions";
 import { hideSidebar, showSidebar } from "../../redux/actions/navActions";
 import { Menu, Button, Sticky } from "semantic-ui-react";
 import { Link } from "react-router-dom";
+import '../../Navbar.css'
 
 class Navbar extends Component {
   // Sign the user out
@@ -25,31 +26,29 @@ class Navbar extends Component {
   render() {
     const loggedIn = localStorage.token ? true : false;
     return (
-        <Menu>
-          <Menu.Item header onClick={this.handleSidebar}>
-            Flows
-          </Menu.Item>
-          {loggedIn ? (
-            <Menu.Menu position="right">
-              <Menu.Item>
-                <Button onClick={this.handleClick}>Sign out</Button>
-              </Menu.Item>
-            </Menu.Menu>
-          ) : (
-            <Menu.Menu position="right">
-              <Menu.Item>
-                <Link to="/signup">
-                  <Button>Sign up</Button>
-                </Link>
-              </Menu.Item>
-              <Menu.Item>
-                <Link to="/login">
-                  <Button>Login</Button>
-                </Link>
-              </Menu.Item>
-            </Menu.Menu>
-          )}
-        </Menu>
+      <Menu color="blue" inverted>
+        <Menu.Item header onClick={this.handleSidebar} as="h3">
+          Flows
+        </Menu.Item>
+        {loggedIn ? (
+          <Menu.Menu position="right">
+            <Menu.Item onClick={this.handleClick}>Sign out</Menu.Item>
+          </Menu.Menu>
+        ) : (
+          <Menu.Menu position="right">
+            <Menu.Item>
+              <Link to="/signup">
+                <Button>Sign up</Button>
+              </Link>
+            </Menu.Item>
+            <Menu.Item>
+              <Link to="/login">
+                <Button color="green">Login</Button>
+              </Link>
+            </Menu.Item>
+          </Menu.Menu>
+        )}
+      </Menu>
     );
   }
 }

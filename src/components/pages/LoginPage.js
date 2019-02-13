@@ -14,7 +14,6 @@ class LoginPage extends Component {
     this.setState({
       [e.target.name]: value
     });
-    // console.log("Name: ", e.target.name, "Value: ", value);
   };
 
   login = e => {
@@ -40,12 +39,18 @@ class LoginPage extends Component {
         if (message === "success") {
           localStorage.setItem("token", jwt);
           this.props.login(user);
+          this.props.history.push("/dashboard")
+
+          // Debugger shows this keyword as undefined. May be why it doesn't push
+          // dashboard page. Why does this happen? 
+
           // debugger;
         } else {
           // console.log(data)
           this.props.error({ message });
         }
-      }).then(this.props.history.push("/dashboard"));
+      })
+      // .then(this.props.history.push("/dashboard"));
   };
 
   render() {
@@ -53,7 +58,14 @@ class LoginPage extends Component {
       <Grid verticalAlign="middle">
         <Grid.Row centered>
           <Grid.Column mobile={14} computer={8} widescreen={8}>
-            <Segment>
+            <Message color="blue">
+              <h4>Use the form below to Log into the Flows App</h4>
+            </Message>
+          </Grid.Column>
+        </Grid.Row>
+        <Grid.Row centered>
+          <Grid.Column mobile={14} computer={8} widescreen={8}>
+            <Segment style={{ marginTop: "50px" }} color="blue">
               <h1>Login:</h1>
               <Form onSubmit={this.login}>
                 <Form.Input
@@ -68,7 +80,9 @@ class LoginPage extends Component {
                   placeholder="Password..."
                   onChange={this.handleChange}
                 />
-                <Button type="submit">Submit</Button>
+                <Button color="green" type="submit">
+                  Submit
+                </Button>
               </Form>
             </Segment>
           </Grid.Column>
