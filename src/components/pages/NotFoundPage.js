@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Grid, Message } from "semantic-ui-react";
 
-const NotFoundPage = () => {
+const NotFoundPage = (props) => {
   return (
     <Grid>
       <Grid.Row centered>
@@ -10,12 +10,20 @@ const NotFoundPage = () => {
             <Message.Header
               style={{ display: "flex", justifyContent: "center" }}
             >
-              404 Page Not Found
+            {props.match.path === "/" ? (
+              "Leaving so soon."
+            ) : (
+              "404 Page Not Found"
+            )}
             </Message.Header>
             <Message.Content
               style={{ display: "flex", justifyContent: "center" }}
             >
-              <p>Woops! Try the back button to navigate to another page. </p>
+              {props.match.path === "/" ? (
+                <p>You're always welcome here at Flows. Come back anytime</p>
+              ) : (
+                <p>Woops! Try the back button to navigate to another page. </p>
+              )}
             </Message.Content>
           </Message>
         </Grid.Column>

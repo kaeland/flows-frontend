@@ -58,7 +58,8 @@ class DashboardPage extends Component {
                   size="large"
                 >
                   <Statistic.Value>
-                    <Icon name="cogs" />{this.props.plant.machine_count}
+                    <Icon name="cogs" />
+                    {this.props.plant.machine_count}
                   </Statistic.Value>
                   <Statistic.Label>Machines</Statistic.Label>
                 </Statistic>
@@ -73,7 +74,8 @@ class DashboardPage extends Component {
                   size="large"
                 >
                   <Statistic.Value>
-                    <Icon name="chart bar outline" />{this.props.plant.data_point_count}
+                    <Icon name="chart bar outline" />
+                    {this.props.plant.data_point_count}
                   </Statistic.Value>
                   <Statistic.Label>Unique Data Points</Statistic.Label>
                 </Statistic>
@@ -88,7 +90,8 @@ class DashboardPage extends Component {
                   size="large"
                 >
                   <Statistic.Value>
-                    <Icon name="user circle" />{this.props.plant.user_count}
+                    <Icon name="user circle" />
+                    {this.props.plant.user_count}
                   </Statistic.Value>
                   <Statistic.Label>Users</Statistic.Label>
                 </Statistic>
@@ -113,9 +116,10 @@ class DashboardPage extends Component {
 
           <Grid.Row />
 
-          {/* The Row for the Roundsheet */}
+          </Grid>
+
+          {/* The Row for the Roundsheet; Roundsheet has its own Grid */}
           <RoundSheetPage match={this.props.match} />
-        </Grid>
       </div>
     );
   }
@@ -124,7 +128,7 @@ class DashboardPage extends Component {
 const mapStateToProps = state => {
   const { chart, plant } = state;
   return {
-    chart, 
+    chart,
     plant
   };
 };
