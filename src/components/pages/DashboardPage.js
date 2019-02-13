@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { loadChartData } from "../../redux/actions/chartActions";
 import RoundSheetPage from "../pages/RoundSheetPage";
-import { fetchChartData } from "../../utils/routes";
+import { fetchChartData, fetchPlantStats } from "../../utils/routes";
 import "../../../node_modules/react-vis/dist/style.css";
 import {
   XYPlot,
@@ -28,6 +28,7 @@ const FlexibleXYPlot = makeWidthFlexible(XYPlot);
 class DashboardPage extends Component {
   componentDidMount() {
     fetchChartData().then(data => this.props.loadChartData(data));
+    fetchPlantStats().then(data => console.log(data))
   }
 
   renderCharts = () => {
@@ -51,7 +52,7 @@ class DashboardPage extends Component {
 
             <Grid.Column mobile={5} computer={4} widescreen={3}>
               <Segment>
-                <Statistic style={{ display: "inline" }} size="large">
+                <Statistic color="blue" style={{ display: "inline" }} size="large">
                   <Statistic.Value>
                     <Icon name="cogs" />5
                   </Statistic.Value>
@@ -62,7 +63,7 @@ class DashboardPage extends Component {
 
             <Grid.Column mobile={5} computer={4} widescreen={3}>
             <Segment>
-            <Statistic style={{ display: "inline" }} size="large">
+            <Statistic color="green" style={{ display: "inline" }} size="large">
               <Statistic.Value>
                 <Icon name="chart bar outline" />5
               </Statistic.Value>
@@ -73,7 +74,7 @@ class DashboardPage extends Component {
 
             <Grid.Column mobile={5} computer={4} widescreen={3}>
             <Segment>
-            <Statistic style={{ display: "inline" }} size="large">
+            <Statistic color="violet" style={{ display: "inline" }} size="large">
               <Statistic.Value>
                 <Icon name="user circle" />5
               </Statistic.Value>
