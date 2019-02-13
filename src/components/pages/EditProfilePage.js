@@ -8,20 +8,20 @@ class EditProfilePage extends Component {
   state = {
     first_name: "",
     last_name: "",
-    bio: "", 
+    bio: "",
     id: undefined
   };
 
   componentDidMount() {
     fetchProfile().then(user => {
-      const { first_name, last_name, bio, id } = user
-      
+      const { first_name, last_name, bio, id } = user;
+
       this.setState({
         id,
-        first_name, 
+        first_name,
         last_name,
-        bio 
-      })
+        bio
+      });
     });
   }
 
@@ -30,9 +30,9 @@ class EditProfilePage extends Component {
   //   const { id, first_name, last_name, bio } = this.state
   //   const userObj = {
   //     user: {
-  //       first_name, 
-  //       last_name, 
-  //       bio 
+  //       first_name,
+  //       last_name,
+  //       bio
   //     }
   //   }
   //   editProfile(id, userObj).then(console.log)
@@ -49,8 +49,8 @@ class EditProfilePage extends Component {
       },
       body: JSON.stringify({
         user: {
-          bio, 
-          first_name, 
+          bio,
+          first_name,
           last_name
         }
       })
@@ -58,8 +58,8 @@ class EditProfilePage extends Component {
     fetch(`${APP_URL}/users/${id}`, options)
       .then(res => res.json())
       .then(console.log)
-      .then(() => this.props.history.push("/profile"))
-  }
+      .then(() => this.props.history.push("/profile"));
+  };
 
   handleChange = e => {
     this.setState({
@@ -72,7 +72,14 @@ class EditProfilePage extends Component {
       <Grid verticalAlign="middle">
         <Grid.Row centered>
           <Grid.Column mobile={14} computer={8} widescreen={8}>
-            <Segment>
+            <Message color="blue">
+              <h4>Use the form below to Edit your user profile.</h4>
+            </Message>
+          </Grid.Column>
+        </Grid.Row>
+        <Grid.Row centered>
+          <Grid.Column mobile={14} computer={8} widescreen={8}>
+            <Segment style={{ marginTop: "50px" }} color="blue">
               <h1>Edit Profile:</h1>
               <Form onSubmit={this.handleSubmit}>
                 <Form.Input
@@ -96,7 +103,7 @@ class EditProfilePage extends Component {
                   value={this.state.bio}
                   onChange={this.handleChange}
                 />
-                <Button type="submit">Submit</Button>
+                <Button color="green" type="submit">Submit</Button>
               </Form>
             </Segment>
           </Grid.Column>
