@@ -54,7 +54,7 @@ class LoginPage extends Component {
         <Grid.Row centered>
           <Grid.Column mobile={14} computer={8} widescreen={8}>
             <Message color="blue">
-              <h4>Use the form below to sign up to the Flows App</h4>
+              <h4>Use the form below to Sign Up to the Flows App</h4>
             </Message>
           </Grid.Column>
         </Grid.Row>
